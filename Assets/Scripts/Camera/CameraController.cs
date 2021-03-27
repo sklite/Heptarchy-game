@@ -44,7 +44,7 @@ public class CameraController : MonoBehaviour
         var mousex = (Input.mousePosition.x);
         var mousey = (Input.mousePosition.y);
         var mouseposition = Camera.main.ScreenToWorldPoint(new Vector3(mousex, mousey, 0));
-      //  print(mouseposition);
+        print(mouseposition);
 
     }
 
