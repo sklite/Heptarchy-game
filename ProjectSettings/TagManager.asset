@@ -50,3 +50,6 @@ TagManager:
   - name: GameObjects
     uniqueID: 1433970331
     locked: 0
+  - name: CastleLayer
+    uniqueID: 3063846659
+    locked: 0
