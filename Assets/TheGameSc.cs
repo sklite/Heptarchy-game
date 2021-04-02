@@ -18,7 +18,7 @@ public class TheGameSc : MonoBehaviour
     {
 
 
-        gameMap = GameObject.Find("GameMap").GetComponent<MapSc>();
+        gameMap = GameObject.Find("Map").GetComponent<MapSc>();
         SettingsSc.SetPause(false);
 
 

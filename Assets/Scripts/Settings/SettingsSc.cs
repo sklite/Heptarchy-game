@@ -81,7 +81,7 @@ public class SettingsSc : MonoBehaviour
 
     public static SettingsSc FindMe()
     {
-        return GameObject.FindGameObjectWithTag("SettingsSc").GetComponent<SettingsSc>();
+        return GameObject.FindGameObjectWithTag("Settings").GetComponent<SettingsSc>();
     }
 
     public static void SetWinner(BasePlayer winner)
