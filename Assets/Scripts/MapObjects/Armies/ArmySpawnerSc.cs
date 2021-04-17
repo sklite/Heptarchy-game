@@ -26,7 +26,7 @@ public class ArmySpawnerSc : MonoBehaviour
 
         var armySize = ((int)(castleScript.CurrentPopulation / SettingsSc.ConscriptKoeff));
         castleScript.CurrentPopulation -= armySize;
-        var newArmy = Instantiate(armyPrefab, sourceCastle.transform.position, Quaternion.Euler(new Vector3(0, 0, 0))) as GameObject;
+        var newArmy = Instantiate(armyPrefab, sourceCastle.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
 
         var armyScript = newArmy.GetComponent<ArmySc>();
         var speed = CalculateSpeed(sourceCastle.transform.position, destination.transform.position);

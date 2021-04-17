@@ -1,3 +1,4 @@
+using Assets.Scripts.Players;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,13 +15,13 @@ public class Pointer : MonoBehaviour
 
     Rect selectionRect;
 
-    //TheGameSc gameScript;
-    //HumanPlayer humanPlayer;
+    TheGameSc gameScript;
+    HumanPlayer humanPlayer;
     GameObject[] castles;
     // Start is called before the first frame update
     void Start()
     {
-        //castles = GameObject.FindGameObjectsWithTag("Castles");
+        castles = GameObject.FindGameObjectsWithTag("Castles");
         selectionRect = new Rect(0, 0, 0, 0);
 
         _staticRectTexture = new Texture2D(1, 1);
@@ -30,8 +31,8 @@ public class Pointer : MonoBehaviour
         _staticRectStyle.normal.background = _staticRectTexture;
 
 
-        //gameScript = GameObject.Find("TheGame").GetComponent<TheGameSc>();
-        //humanPlayer = gameScript.GetHumanPlayer();
+        gameScript = GameObject.Find("TheGame").GetComponent<TheGameSc>();
+        humanPlayer = gameScript.GetHumanPlayer();
     }
 
     // Update is called once per frame
@@ -58,20 +59,20 @@ public class Pointer : MonoBehaviour
 
             if (somethingSelected && SelectionIsSmall() && selection.Count == 1)
             {
-                //humanPlayer.SendTroops(selection[0]);
+                humanPlayer.SendTroops(selection[0]);
                 DeselectAllCastles();
                 return;
             }
             DeselectAllCastles();
             foreach (var item in selection)
             {
-                //var castleScript = item.GetComponent<CastleSc>();
-                //if (castleScript.GetOwner() != humanPlayer)
-                //    continue;
+                var castleScript = item.GetComponent<CastleSc>();
+                if (castleScript.GetOwner() != humanPlayer)
+                    continue;
 
-                //castleScript.Select();
-                //humanPlayer.SelectedCities.Add(item);
-                //somethingSelected = true;
+                castleScript.Select();
+                humanPlayer.SelectedCities.Add(item);
+                somethingSelected = true;
             }
             selectionRect = new Rect(0, 0, 0, 0);
         }
