@@ -10,13 +10,13 @@ namespace Assets.Scripts.Players
 {
     public class AiPlayer : BasePlayer
     {
-        Dictionary<CastleSc, float> citiesToAttack;
-        BaseBrain brains;
+        Dictionary<CastleSc, float> _citiesToAttack;
+        BaseBrain _brains;
 
         public AiPlayer(Color color, MapSc gameMap)
             : base(color, gameMap)
         {
-            citiesToAttack = new Dictionary<CastleSc, float>();
+            _citiesToAttack = new Dictionary<CastleSc, float>();
         }
 
         public override void MakeMove()
@@ -38,8 +38,8 @@ namespace Assets.Scripts.Players
 
         public void SetBrains(BaseBrain newBrains, AiEnumeration aiEnumeration)
         {
-            this.brains = newBrains;
-            brains.SetOwner(this);
+            _brains = newBrains;
+            _brains.SetOwner(this);
             if (aiEnumeration != AiEnumeration.NoAi)
                 canGo = true;
 
@@ -47,7 +47,7 @@ namespace Assets.Scripts.Players
 
         public override void Init()
         {
-            brains.Init();
+            _brains.Init();
         }
 
         private void AttackIfRequired()
@@ -55,7 +55,7 @@ namespace Assets.Scripts.Players
             CastleSc cityToAttack = null;
             float biggestAttackValue = 0;
 
-            foreach (var curCity in citiesToAttack)
+            foreach (var curCity in _citiesToAttack)
             {
                 if (curCity.Value > biggestAttackValue)
                 {
@@ -86,7 +86,7 @@ namespace Assets.Scripts.Players
 
         private void CalculateAttackPriority()
         {
-            citiesToAttack = brains.CalculateCitiesToAttack();
+            _citiesToAttack = _brains.CalculateCitiesToAttack();
         }
 
 

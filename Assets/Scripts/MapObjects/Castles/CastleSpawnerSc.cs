@@ -7,33 +7,35 @@ public class CastleSpawnerSc : MonoBehaviour
 {
 	public int castlesCount;
 	public GameObject[] castlesPrefaps;
-	GameObject widthLabel;
-	TheGameSc gameScript;
-	GameObject[] castles;
+	GameObject _widthLabel;
+	TheGameSc _gameScript;
+	GameObject[] _castles;
+    private MapSc _map;
 	//	SettingsSc gameSettings;
 	// Use this for initialization
-	float villageSize = 0.5f;
-	float barrackSize = 0.8f;
-	float castleSize = 1.2f;
+	float _villageSize = 0.5f;
+	float _barrackSize = 0.8f;
+	float _castleSize = 1.2f;
 
-	Dictionary<CastleSize, GameObject> typesDict;
+	Dictionary<CastleSize, GameObject> _typesDict;
 
 	void Start()
 	{
-		typesDict = new Dictionary<CastleSize, GameObject>{
+		_typesDict = new Dictionary<CastleSize, GameObject>{
 			{CastleSize.Village1, castlesPrefaps[3]},
 			{CastleSize.Village2, castlesPrefaps[2]},
 			{CastleSize.Barracks, castlesPrefaps[1]},
 			{CastleSize.CastleSc, castlesPrefaps[0]}
 		};
 
-		villageSize = 1.1f;
-		barrackSize = 1.3f;
-		castleSize = 1.4f;
-		var gameSettings = SettingsSc.FindMe();
-		castles = new GameObject[castlesCount];
+		_villageSize = 1.1f;
+		_barrackSize = 1.3f;
+		_castleSize = 1.4f;
+        _map = GameObject.Find("Map").GetComponent<MapSc>();
+
+		_castles = new GameObject[castlesCount];
 		var theGame = GameObject.Find("TheGame");
-		gameScript = theGame.GetComponent<TheGameSc>();
+		_gameScript = theGame.GetComponent<TheGameSc>();
 
 		GenerateCitiesPositions();
 		AssignCitiesToPlayers();
@@ -44,7 +46,7 @@ public class CastleSpawnerSc : MonoBehaviour
 
 	private void InitPlayers()
 	{
-		foreach (var player in gameScript.GetAllPlayers())
+		foreach (var player in _gameScript.GetAllPlayers())
 		{
 			player.Init();
 		}
@@ -53,31 +55,26 @@ public class CastleSpawnerSc : MonoBehaviour
 
 	private void GenerateCitiesPositions()
 	{
-
-		//if (SettingsSc.Stored != null && SettingsSc.Stored.CastleInfos != null)
 		SettingsSc.Stored.CastleInfos.Clear();
-		var gaiaPlayer = gameScript.GetGaia();
-		Vector3 pt = new Vector3();
+		var gaiaPlayer = _gameScript.GetGaia();
 		for (int i = 0; i < castlesCount; i++)
 		{
 
-			float population = 0.8f + UnityEngine.Random.value * 0.7f;
-			pt = getFreePoint(population);
-
-			if (pt.y == -777)
+			float population = 0.8f + Random.value * 0.7f;
+			if (!GetFreePoint(population, out Vector3 pt))
 				continue;
 
-			var castleType = UnityEngine.Random.value > 0.5 ? CastleSize.Village1 : CastleSize.Village2;
-			if (population > castleSize)
+			var castleType = Random.value > 0.5 ? CastleSize.Village1 : CastleSize.Village2;
+			if (population > _castleSize)
 				castleType = CastleSize.CastleSc;
-			else if (population > barrackSize)
+			else if (population > _barrackSize)
 				castleType = CastleSize.Barracks;
 
-			castles[i] = Instantiate(typesDict[castleType], pt, Quaternion.Euler(new Vector3(0, 0, 0))) as GameObject;
+			_castles[i] = Instantiate(_typesDict[castleType], pt, Quaternion.Euler(new Vector3(0, 0, 0)));
 
-			castles[i].transform.localScale = new Vector3(population, population, 0);
+			_castles[i].transform.localScale = new Vector3(population, population, 0);
 
-			var castleScript = castles[i].GetComponent<CastleSc>();
+			var castleScript = _castles[i].GetComponent<CastleSc>();
 			castleScript.CastleType = castleType;
 			castleScript.SetBaseOwner(gaiaPlayer);
 			castleScript.SetBasePopulation(population * 20);
@@ -92,40 +89,42 @@ public class CastleSpawnerSc : MonoBehaviour
 
 	private void AssignCitiesToPlayers()
 	{
-		var nonGaiaPlayers = gameScript.GetNonGaiaPlayers();
-		if (castles.Length < nonGaiaPlayers.Length)
-			return;
-		for (int i = 0; i < nonGaiaPlayers.Length; i++)
-		{
-			var castleScript = castles[i].GetComponent<CastleSc>();
-			castleScript.SetBaseOwner(nonGaiaPlayers[i]);
+		var nonGaiaPlayers = _gameScript.GetNonGaiaPlayers();
+        if (_castles.Length < nonGaiaPlayers.Length)
+            return;
+        for (int i = 0; i < nonGaiaPlayers.Length; i++)
+        {
+            var castleScript = _castles[i].GetComponent<CastleSc>();
+            castleScript.SetBaseOwner(nonGaiaPlayers[i]);
 
-		}
+        }
+
+        //for (int i = 0; i < _castles.Length; i++)
+        //{
+        //    var castleScript = _castles[i].GetComponent<CastleSc>();
+        //    castleScript.SetBaseOwner(nonGaiaPlayers[0]);
+        //}
 	}
 
-	private Vector3 getFreePoint(float citySize)
+	private bool GetFreePoint(float citySize, out Vector3 pt)
 	{
-
 		int maxAttemptCount = 100;
-		Vector3 pt = new Vector3(1, 1, 0);
+		pt = new Vector3(1, 1, 0);
 		while (maxAttemptCount > 0)
 		{
 			maxAttemptCount--;
-			float xCoordinate = UnityEngine.Random.value * SettingsSc.ScreenWidth / 2.0f - citySize / 2;
-			float yCoordinate = UnityEngine.Random.value * SettingsSc.ScreenHeight / 2.0f - citySize / 2;
-			if (UnityEngine.Random.value < 0.5)
-				xCoordinate *= -1;
-			if (UnityEngine.Random.value < 0.5)
-				yCoordinate *= -1;
-			pt = new Vector3(xCoordinate, yCoordinate, 0);
+
+            var xCoord = Random.Range(MapSc.HabitableMapSize.xMin, MapSc.HabitableMapSize.xMax);
+            var yCoord = Random.Range(MapSc.HabitableMapSize.yMin, MapSc.HabitableMapSize.yMax);
+
+			pt = new Vector3(xCoord, yCoord, 0);
 			if (CanPlaceHere(pt, citySize))
 			{
-				return pt;
+              //  return new Vector3(25, 16, 0);
+				return true;
 			}
 		}
-		pt.y = -777; ;
-		return pt;
-
+		return false;
 	}
 
 
@@ -134,7 +133,7 @@ public class CastleSpawnerSc : MonoBehaviour
 
 		for (int i = 0; i < castlesCount; i++)
 		{
-			var curCastle = castles[i];
+			var curCastle = _castles[i];
 			if (curCastle == null)
 				continue;
 

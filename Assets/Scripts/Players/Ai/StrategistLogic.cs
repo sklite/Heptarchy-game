@@ -39,7 +39,7 @@ namespace Assets.Scripts.Players.Ai
             return (int)koeff;
         }
 
-        private float calcArmiesSumm()
+        private float CalcArmiesSumm()
         {
 
             float summ = 0;

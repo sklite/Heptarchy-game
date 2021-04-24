@@ -6,23 +6,23 @@ using UnityEngine;
 
 public class ArmySc : MonoBehaviour
 {
-    Vector3 speed;
+    Vector3 _speed;
     // Use this for initialization
-    GameObject[] castles;
-    GameObject destination;
+    GameObject[] _castles;
+    GameObject _destination;
 
-    BasePlayer owner;
-    new BoxCollider2D collider;
+    BasePlayer _owner;
+    new BoxCollider2D _collider;
 
     // Color color;
-    SpriteRenderer sprite;
+    SpriteRenderer _sprite;
 
-    GameObject mapArmies;
+    GameObject _mapArmies;
 
     void Awake()
     {
         var spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
-        sprite = spriteRenderers.First(render => render.name == "ColorSprite");
+        _sprite = spriteRenderers.First(render => render.name == "ColorSprite");
 
         //foreach (var item in spriteRenderers)
         //{
@@ -37,13 +37,13 @@ public class ArmySc : MonoBehaviour
     {
 
         //		var camera = Camera.main;
-        castles = GameObject.FindGameObjectsWithTag("Castles");
+        _castles = GameObject.FindGameObjectsWithTag("Castles");
 
-        collider = GetComponent<BoxCollider2D>();
+        _collider = GetComponent<BoxCollider2D>();
 
-        mapArmies = GameObject.Find("Armies");
+        _mapArmies = GameObject.Find("Armies");
 
-        transform.SetParent(mapArmies.transform);
+        transform.SetParent(_mapArmies.transform);
     }
 
     // Update is called once per frame
@@ -51,7 +51,7 @@ public class ArmySc : MonoBehaviour
     {
         if (SettingsSc.IsPaused)
             return;
-        transform.Translate(speed, Space.World);
+        transform.Translate(_speed, Space.World);
 
 
 
@@ -70,11 +70,11 @@ public class ArmySc : MonoBehaviour
 
     void CheckCollisions()
     {
-        foreach (var castle in castles)
+        foreach (var castle in _castles)
         {
 
             var castleCollider = castle.GetComponent<BoxCollider2D>();
-            if (castleCollider.bounds.Intersects(collider.bounds))
+            if (castleCollider.bounds.Intersects(_collider.bounds))
             {
                 castle.GetComponent<CastleSc>().Visit(this);
                 return;
@@ -103,18 +103,18 @@ public class ArmySc : MonoBehaviour
 
     public void SetSpeed(Vector3 newSpeed)
     {
-        this.speed = newSpeed;
+        _speed = newSpeed;
     }
 
     public BasePlayer GetOwner()
     {
-        return owner;
+        return _owner;
     }
 
     public void SetOwner(BasePlayer newOwner)
     {
-        sprite.color = newOwner.GetPlayerColor();
-        this.owner = newOwner;
+        _sprite.color = newOwner.GetPlayerColor();
+        _owner = newOwner;
     }
 
     internal void Destroy()

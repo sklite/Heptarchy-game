@@ -11,11 +11,11 @@ namespace Assets.Menu.Scripts
 {
     class AiFromButtonsCreator
     {
-        Dictionary<string, AiEnumeration> aiEnumDict;
+        Dictionary<string, AiEnumeration> _aiEnumDict;
 
         public AiFromButtonsCreator()
         {
-            aiEnumDict = new Dictionary<string, AiEnumeration>()
+            _aiEnumDict = new Dictionary<string, AiEnumeration>()
             {
                 {"None", AiEnumeration.NoAi},
                 {"Easy", AiEnumeration.Easy},
@@ -39,7 +39,7 @@ namespace Assets.Menu.Scripts
 
         AiEnumeration GetAi(GameObject aiButton)
         {
-            return aiEnumDict[aiButton.GetComponentInChildren<Text>().text];
+            return _aiEnumDict[aiButton.GetComponentInChildren<Text>().text];
         }
 
         Color GetColor(GameObject colorButton)

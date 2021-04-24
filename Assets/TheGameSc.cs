@@ -8,17 +8,17 @@ using UnityEngine;
 
 public class TheGameSc : MonoBehaviour
 {
-    BasePlayer[] players;
-    MapSc gameMap;
+    BasePlayer[] _players;
+    MapSc _gameMap;
 
 
-    int counter;
+    int _counter;
     // Use this for initialization
     void Start()
     {
 
 
-        gameMap = GameObject.Find("Map").GetComponent<MapSc>();
+        _gameMap = GameObject.Find("Map").GetComponent<MapSc>();
         SettingsSc.SetPause(false);
 
 
@@ -26,13 +26,13 @@ public class TheGameSc : MonoBehaviour
         if (playerInfos != null)
         {
             var playerList = new List<BasePlayer>();
-            playerList.Add(new HumanPlayer(Color.blue, gameMap));
-            playerList.Add(new AiPlayer(Color.white, gameMap) { IsGaia = true });
+            playerList.Add(new HumanPlayer(Color.blue, _gameMap));
+            playerList.Add(new AiPlayer(Color.white, _gameMap) { IsGaia = true });
             (playerList[1] as AiPlayer).SetBrains(new SwarmLogic(this), AiEnumeration.NoAi);
 
             foreach (var playerInfo in playerInfos)
             {
-                var newAiPlayer = new AiPlayer(playerInfo.Color, gameMap);
+                var newAiPlayer = new AiPlayer(playerInfo.Color, _gameMap);
 
                 BaseBrain logic = null;
 
@@ -46,23 +46,23 @@ public class TheGameSc : MonoBehaviour
                 newAiPlayer.SetBrains(logic, playerInfo.AiSkill);
                 playerList.Add(newAiPlayer);
             }
-            players = playerList.ToArray();
+            _players = playerList.ToArray();
         }
         else
         {
-            players = new BasePlayer[]
+            _players = new BasePlayer[]
             {
-                new HumanPlayer(Color.blue, gameMap),
-                new AiPlayer(Color.white, gameMap)  {IsGaia = true},
-                new AiPlayer(Color.red, gameMap),
-                new AiPlayer(Color.green, gameMap),
-                new AiPlayer(Color.yellow, gameMap)
+                new HumanPlayer(Color.blue, _gameMap),
+                new AiPlayer(Color.white, _gameMap)  {IsGaia = true},
+                new AiPlayer(Color.red, _gameMap),
+                new AiPlayer(Color.green, _gameMap),
+                new AiPlayer(Color.yellow, _gameMap)
             };
 
-            (players[1] as AiPlayer).SetBrains(new SwarmLogic(this), AiEnumeration.NoAi);
-            (players[2] as AiPlayer).SetBrains(new SwarmLogic(this), AiEnumeration.Easy);
-            (players[3] as AiPlayer).SetBrains(new StrategistLogic(this), AiEnumeration.Normal);
-            (players[4] as AiPlayer).SetBrains(new StrategistLogic(this), AiEnumeration.Normal);
+            (_players[1] as AiPlayer).SetBrains(new SwarmLogic(this), AiEnumeration.NoAi);
+            (_players[2] as AiPlayer).SetBrains(new SwarmLogic(this), AiEnumeration.Easy);
+            (_players[3] as AiPlayer).SetBrains(new StrategistLogic(this), AiEnumeration.Normal);
+            (_players[4] as AiPlayer).SetBrains(new StrategistLogic(this), AiEnumeration.Normal);
         }
 
     }
@@ -71,21 +71,22 @@ public class TheGameSc : MonoBehaviour
     void Update()
     {
 
-        counter++;
-        if (counter % 120 != 0)
+        _counter++;
+        if (_counter % 500 != 0)
         {
-            if (counter > int.MaxValue - 10000)
-                counter = 0;
+
+            if (_counter == int.MaxValue)
+                _counter = 0;
             return;
         }
 
-        foreach (var player in players)
+        foreach (var player in _players)
         {
             if (player is HumanPlayer)
                 continue;
             player.MakeMove();
 
-            if (player.ControlledCities.Count == gameMap.GetAllCities().Length)
+            if (player.ControlledCities.Count == _gameMap.GetAllCities().Length)
             {
 
             }
@@ -98,27 +99,27 @@ public class TheGameSc : MonoBehaviour
 
     public HumanPlayer GetHumanPlayer()
     {
-        return players[0] as HumanPlayer;
+        return _players[0] as HumanPlayer;
     }
 
     public AiPlayer GetGaia()
     {
-        return players[1] as AiPlayer;
+        return _players[1] as AiPlayer;
     }
 
     public BasePlayer[] GetNonGaiaPlayers()
     {
-        return players.Where(player => !player.IsGaia).ToArray();
+        return _players.Where(player => !player.IsGaia).ToArray();
     }
 
     public BasePlayer[] GetAllPlayers()
     {
-        return players;
+        return _players;
     }
 
 
     internal MapSc GetMap()
     {
-        return gameMap;
+        return _gameMap;
     }
 }

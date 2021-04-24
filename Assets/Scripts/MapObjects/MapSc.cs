@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class MapSc : MonoBehaviour
 {
-    List<CastleSc> mapCastles;
+    public static readonly Vector2 MapSize = new Vector2(30, 20);
+    public static readonly Rect HabitableMapSize = new Rect(-25, -17, 50, 34);
 
-
-    public static readonly Vector2 MapSize = new Vector2(21, 14);
     // Use this for initialization
     void Start()
     {

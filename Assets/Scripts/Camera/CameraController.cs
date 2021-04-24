@@ -6,23 +6,23 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    Vector2 botLeft, topRight;
+    Vector2 _botLeft, _topRight;
 
-    float borderEpsilon = 0.2f;
+    float _borderEpsilon = 0.2f;
 
   //  GameObject ui;
-    List<Func<Vector3, bool>> bordersCheck;
+    List<Func<Vector3, bool>> _bordersCheck;
 
 
 
     public CameraController()
     {
-        bordersCheck = new List<Func<Vector3, bool>>
+        _bordersCheck = new List<Func<Vector3, bool>>
         {
-            direction => direction.x > 0 && topRight.x > MapSettings.MapSize.x - borderEpsilon,
-            direction => direction.x < 0 && botLeft.x < -MapSettings.MapSize.x + borderEpsilon,
-            direction => direction.y > 0 && topRight.y > MapSettings.MapSize.y - borderEpsilon,
-            direction => direction.y < 0 && botLeft.y < -MapSettings.MapSize.y + borderEpsilon
+            direction => direction.x > 0 && _topRight.x > MapSc.MapSize.x - _borderEpsilon,
+            direction => direction.x < 0 && _botLeft.x < -MapSc.MapSize.x + _borderEpsilon,
+            direction => direction.y > 0 && _topRight.y > MapSc.MapSize.y - _borderEpsilon,
+            direction => direction.y < 0 && _botLeft.y < -MapSc.MapSize.y + _borderEpsilon
         };
 
     }
@@ -37,21 +37,20 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        botLeft = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0));
-        topRight = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+        _botLeft = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0));
+        _topRight = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
         //print position of mouse
         var mousex = (Input.mousePosition.x);
         var mousey = (Input.mousePosition.y);
-        var mouseposition = Camera.main.ScreenToWorldPoint(new Vector3(mousex, mousey, 0));
-        //print(mouseposition);
-
+        var mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(mousex, mousey, 0));
+        if (Input.GetKeyDown(KeyCode.RightAlt))
+            print(mousePosition);
     }
 
 
     public void Move(Vector3 direction)
     {
-        if (bordersCheck.Any(func => func(direction)))
+        if (_bordersCheck.Any(func => func(direction)))
             return;
 
         transform.Translate(direction * Time.deltaTime * 2);

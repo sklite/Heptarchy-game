@@ -8,21 +8,21 @@ public class Pointer : MonoBehaviour
     private static Texture2D _staticRectTexture;
     private static GUIStyle _staticRectStyle;
 
-    private bool somethingSelected = false;
+    private bool _somethingSelected = false;
 
     //Вектора в экранных координатах
-    Vector3 inputStartPoint, inputFinishPoint;
+    Vector3 _inputStartPoint, _inputFinishPoint;
 
-    Rect selectionRect;
+    Rect _selectionRect;
 
-    TheGameSc gameScript;
-    HumanPlayer humanPlayer;
-    GameObject[] castles;
+    TheGameSc _gameScript;
+    HumanPlayer _humanPlayer;
+    GameObject[] _castles;
     // Start is called before the first frame update
     void Start()
     {
-        castles = GameObject.FindGameObjectsWithTag("Castles");
-        selectionRect = new Rect(0, 0, 0, 0);
+        _castles = GameObject.FindGameObjectsWithTag("Castles");
+        _selectionRect = new Rect(0, 0, 0, 0);
 
         _staticRectTexture = new Texture2D(1, 1);
         _staticRectStyle = new GUIStyle();
@@ -31,8 +31,8 @@ public class Pointer : MonoBehaviour
         _staticRectStyle.normal.background = _staticRectTexture;
 
 
-        gameScript = GameObject.Find("TheGame").GetComponent<TheGameSc>();
-        humanPlayer = gameScript.GetHumanPlayer();
+        _gameScript = GameObject.Find("TheGame").GetComponent<TheGameSc>();
+        _humanPlayer = _gameScript.GetHumanPlayer();
     }
 
     // Update is called once per frame
@@ -43,8 +43,8 @@ public class Pointer : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            inputStartPoint = Input.mousePosition;
-            inputStartPoint.y = Screen.height - inputStartPoint.y;
+            _inputStartPoint = Input.mousePosition;
+            _inputStartPoint.y = Screen.height - _inputStartPoint.y;
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -53,13 +53,13 @@ public class Pointer : MonoBehaviour
             if (selection.Count == 0)
             {
                 DeselectAllCastles();
-                selectionRect = new Rect(0, 0, 0, 0);
+                _selectionRect = new Rect(0, 0, 0, 0);
                 return;
             }
 
-            if (somethingSelected && SelectionIsSmall() && selection.Count == 1)
+            if (_somethingSelected && SelectionIsSmall() && selection.Count == 1)
             {
-                humanPlayer.SendTroops(selection[0]);
+                _humanPlayer.SendTroops(selection[0]);
                 DeselectAllCastles();
                 return;
             }
@@ -67,30 +67,30 @@ public class Pointer : MonoBehaviour
             foreach (var item in selection)
             {
                 var castleScript = item.GetComponent<CastleSc>();
-                if (castleScript.GetOwner() != humanPlayer)
+                if (castleScript.GetOwner() != _humanPlayer)
                     continue;
 
                 castleScript.Select();
-                humanPlayer.SelectedCities.Add(item);
-                somethingSelected = true;
+                _humanPlayer.SelectedCities.Add(item);
+                _somethingSelected = true;
             }
-            selectionRect = new Rect(0, 0, 0, 0);
+            _selectionRect = new Rect(0, 0, 0, 0);
         }
 
 
 
         if (Input.GetMouseButton(0))
         {
-            inputFinishPoint = Input.mousePosition;
-            inputFinishPoint.y = Screen.height - inputFinishPoint.y;
+            _inputFinishPoint = Input.mousePosition;
+            _inputFinishPoint.y = Screen.height - _inputFinishPoint.y;
 
-            var minX = Mathf.Min(inputStartPoint.x, inputFinishPoint.x);
-            var minY = Mathf.Min(inputStartPoint.y, inputFinishPoint.y);
+            var minX = Mathf.Min(_inputStartPoint.x, _inputFinishPoint.x);
+            var minY = Mathf.Min(_inputStartPoint.y, _inputFinishPoint.y);
 
 
-            selectionRect = new Rect(minX, minY,
-                Mathf.Abs(inputStartPoint.x - inputFinishPoint.x),
-                Mathf.Abs(inputStartPoint.y - inputFinishPoint.y));
+            _selectionRect = new Rect(minX, minY,
+                Mathf.Abs(_inputStartPoint.x - _inputFinishPoint.x),
+                Mathf.Abs(_inputStartPoint.y - _inputFinishPoint.y));
 
 
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -105,34 +105,33 @@ public class Pointer : MonoBehaviour
     List<GameObject> SelectCastles()
     {
         var result = new List<GameObject>();
-        if (castles == null || castles.Length == 0)
+        if (_castles == null || _castles.Length == 0)
             return result;
 
         var normalizedSelectionBox = new Rect();
-        var topLeft = Camera.main.ScreenToWorldPoint(new Vector3(selectionRect.xMin, selectionRect.yMin, 0));
-        var botRight = Camera.main.ScreenToWorldPoint(new Vector3(selectionRect.xMax, selectionRect.yMax, 0));
+        var botLeft = Camera.main.ScreenToWorldPoint(new Vector3(_selectionRect.xMin, Screen.height - _selectionRect.yMin, 0));
+        var topRight = Camera.main.ScreenToWorldPoint(new Vector3(_selectionRect.xMax, Screen.height - _selectionRect.yMax, 0));
 
+        var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        topLeft.y *= -1;
-        botRight.y *= -1;
+        var xMin = Mathf.Min((botLeft.x), (topRight.x));
+        var yMin = Mathf.Min((botLeft.y), (topRight.y));
 
-        var xMin = Mathf.Min((topLeft.x), (botRight.x));
-        var yMin = Mathf.Min((topLeft.y), (botRight.y));
+        var xMax = Mathf.Max(botLeft.x, topRight.x);
+        var yMax = Mathf.Max(botLeft.y, topRight.y);
 
-        var xMax = Mathf.Max(topLeft.x, botRight.x);
-        var yMax = Mathf.Max(topLeft.y, botRight.y);
-
-        var center = new Vector3((botRight.x + topLeft.x) / 2, (botRight.y + topLeft.y) / 2, 0);
+        var center = new Vector3((topRight.x + botLeft.x) / 2, (topRight.y + botLeft.y) / 2, 0);
         var borders = new Vector3((xMax - xMin), (yMax - yMin), 0);
 
-        normalizedSelectionBox.xMin = topLeft.x;
-        normalizedSelectionBox.xMax = botRight.x;
+        normalizedSelectionBox.xMin = botLeft.x;
+        normalizedSelectionBox.xMax = topRight.x;
 
-        normalizedSelectionBox.yMin = topLeft.y;
-        normalizedSelectionBox.yMax = botRight.y;
+        normalizedSelectionBox.yMin = botLeft.y;
+        normalizedSelectionBox.yMax = topRight.y;
 
         var bounds = new Bounds(center, borders);
-        foreach (var item in castles)
+        print(bounds);
+        foreach (var item in _castles)
         {
             //var castleScript = item.GetComponent<CastleSc>();
             //if (castleScript.GetOwner() != humanPlayer)
@@ -147,18 +146,18 @@ public class Pointer : MonoBehaviour
 
     void DeselectAllCastles()
     {
-        somethingSelected = false;
-        foreach (var item in castles)
+        _somethingSelected = false;
+        foreach (var item in _castles)
         {
-            //var castleScript = item.GetComponent<CastleSc>();
-            //if (castleScript.IsSelected)
-            //    castleScript.Deselect();
+            var castleScript = item.GetComponent<CastleSc>();
+            if (castleScript.IsSelected)
+                castleScript.Deselect();
         }
     }
 
     bool SelectionIsSmall()
     {
-        return selectionRect.width < 50 && selectionRect.height < 50;
+        return _selectionRect.width < 50 && _selectionRect.height < 50;
     }
 
     private bool IsInsideSelection(Bounds bounds, GameObject castle)
@@ -188,8 +187,8 @@ public class Pointer : MonoBehaviour
         //GUIDrawRect(new Rect(1, 1, 40, 200), Color.blue);
         //if (selectionRect == null)
         //    return;
-        GUIDrawRect(selectionRect, Color.green);
-        GUI.Box(selectionRect, GUIContent.none, _staticRectStyle);
+        GuiDrawRect(_selectionRect, Color.green);
+        GUI.Box(_selectionRect, GUIContent.none, _staticRectStyle);
 
         //if (isPause)
         //    GUI.Window(0, MainMenu, TheMainMenu, "Pause Menu");
@@ -198,7 +197,7 @@ public class Pointer : MonoBehaviour
 
 
     // Note that this function is only meant to be called from OnGUI() functions.
-    public static void GUIDrawRect(Rect position, Color color)
+    public static void GuiDrawRect(Rect position, Color color)
     {
         //if (_staticRectTexture == null)
         //{

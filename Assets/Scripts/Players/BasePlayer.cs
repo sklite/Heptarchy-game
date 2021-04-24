@@ -9,9 +9,9 @@ namespace Assets.Scripts.Players
 {
     public abstract class BasePlayer
     {
-        Color PlayerColor;
+        Color _playerColor;
 
-        ArmySpawnerSc armySpawner;
+        ArmySpawnerSc _armySpawner;
 
 
         public bool IsGaia;
@@ -20,8 +20,8 @@ namespace Assets.Scripts.Players
         public List<GameObject> SelectedCities;
 
         public List<GameObject> armies;
-        private Color color;
-        private MapSc gameMap;
+        private Color _color;
+        private MapSc _gameMap;
 
         // может ли вообще ходить
         public bool canGo = false;
@@ -31,8 +31,8 @@ namespace Assets.Scripts.Players
             ControlledCities = new List<GameObject>();
             SelectedCities = new List<GameObject>();
             armies = new List<GameObject>();
-            this.PlayerColor = color;
-            armySpawner = GameObject.Find("ArmySpawner").GetComponent<ArmySpawnerSc>();
+            _playerColor = color;
+            _armySpawner = GameObject.Find("ArmySpawner").GetComponent<ArmySpawnerSc>();
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Assets.Scripts.Players
 
         public Color GetPlayerColor()
         {
-            return PlayerColor;
+            return _playerColor;
         }
 
         public virtual void MakeMove()
@@ -77,7 +77,7 @@ namespace Assets.Scripts.Players
                 var castleScript = item.GetComponent<CastleSc>();
                 if (castleScript.CurrentPopulation < 2)
                     continue;
-                var newArmyObject = armySpawner.CreateArmy(item, target);
+                var newArmyObject = _armySpawner.CreateArmy(item, target);
                 newArmyObject.GetComponent<ArmySc>().SetOwner(this);
 
             }

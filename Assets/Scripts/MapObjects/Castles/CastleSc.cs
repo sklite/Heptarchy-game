@@ -7,36 +7,36 @@ using UnityEngine;
 
 public class CastleSc : MonoBehaviour
 {
-    CastleInfo info = new CastleInfo();
+    CastleInfo _info = new CastleInfo();
 
-    BasePlayer currentOwner;
+    BasePlayer _currentOwner;
 
-    GameObject label;
-    UnityEngine.UI.Text populationText;
-    Gradient gradient;
+    GameObject _label;
+   // UnityEngine.UI.Text _populationText;
+    Gradient _gradient;
 
-    SpriteRenderer circleSprite, castleColorSprite;
+    SpriteRenderer _circleSprite, _castleColorSprite;
 
-    GameObject mapCastles;
+    GameObject _mapCastles;
 
     void Awake()
     {
         var spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
-        circleSprite = spriteRenderers.First(render => render.name == "CircleSprite");
+        _circleSprite = spriteRenderers.First(render => render.name == "CircleSprite");
         //Цвет щитка в центре замка
         if (spriteRenderers.Any(render => render.name == "ColorSprite"))
-            castleColorSprite = spriteRenderers.First(render => render.name == "ColorSprite");
+            _castleColorSprite = spriteRenderers.First(render => render.name == "ColorSprite");
     }
 
     void Start()
     {
 
 
-        mapCastles = GameObject.Find("Castles");
+        _mapCastles = GameObject.Find("Castles");
         InitText();
-        info.selected = false;
+        _info.selected = false;
 
-        gradient = new Gradient();
+        _gradient = new Gradient();
 
         var colorKey = new[]{
             new GradientColorKey(Color.white, 0),
@@ -49,10 +49,10 @@ public class CastleSc : MonoBehaviour
             new GradientAlphaKey(1, 1)
         };
 
-        gradient.SetKeys(colorKey, alphaKey);
+        _gradient.SetKeys(colorKey, alphaKey);
 
 
-        transform.SetParent(mapCastles.transform);
+        transform.SetParent(_mapCastles.transform);
 
     }
 
@@ -62,19 +62,19 @@ public class CastleSc : MonoBehaviour
         var widthBy2 = SettingsSc.ScreenWidth / 2;
         var heightBy2 = SettingsSc.ScreenHeight / 2;
 
-        float x = (widthBy2 + this.transform.position.x) / (SettingsSc.ScreenWidth);
-        float y = (heightBy2 + this.transform.position.y) / (SettingsSc.ScreenHeight);
+        float x = (widthBy2 + transform.position.x) / (SettingsSc.ScreenWidth);
+        float y = (heightBy2 + transform.position.y) / (SettingsSc.ScreenHeight);
 
         y -= 0.0003f;
         y -= 0.05f;
 
-        label = new GameObject("CastleSc population label");
-        label.AddComponent<UnityEngine.UI.Text>();
+        //_label = new GameObject("CastleSc population label");
+        //_label.AddComponent<UnityEngine.UI.Text>();
 
-        label.transform.SetParent(mapCastles.transform);
-        label.transform.position = new Vector3(Mathf.Abs(x), Mathf.Abs(y), 0.0f);
-        populationText = label.GetComponent<UnityEngine.UI.Text>();
-        populationText.text = info.BasePopulation.ToString();
+        //_label.transform.SetParent(_mapCastles.transform);
+        //_label.transform.position = new Vector3(Mathf.Abs(x), Mathf.Abs(y), 0.0f);
+        //_populationText = _label.GetComponent<UnityEngine.UI.Text>();
+        //_populationText.text = _info.BasePopulation.ToString();
         //populationText = TextAnchor.UpperCenter;
 
         //label.transform.parent = mapCastles.transform;
@@ -87,64 +87,64 @@ public class CastleSc : MonoBehaviour
         if (SettingsSc.IsPaused)
             return;
 
-        if (CurrentPopulation < info.BasePopulation)
-            CurrentPopulation += info.growthRate;
-        populationText.text = Mathf.RoundToInt(CurrentPopulation).ToString();
-        if (info.selected)
+        if (CurrentPopulation < _info.BasePopulation)
+            CurrentPopulation += _info.growthRate;
+        //_populationText.text = Mathf.RoundToInt(CurrentPopulation).ToString();
+        if (_info.selected)
         {
             var timeFraction = Time.realtimeSinceStartup - (int)Time.realtimeSinceStartup;
-            info.CurrentColor = gradient.Evaluate(timeFraction);
-            circleSprite.color = info.CurrentColor;
-            if (castleColorSprite != null)
-                castleColorSprite.color = info.CurrentColor;
+            _info.CurrentColor = _gradient.Evaluate(timeFraction);
+            _circleSprite.color = _info.CurrentColor;
+            if (_castleColorSprite != null)
+                _castleColorSprite.color = _info.CurrentColor;
         }
     }
 
     public void Select()
     {
-        currentOwner.ControlledCities.Add(gameObject);
-        info.selected = true;
+        _currentOwner.ControlledCities.Add(gameObject);
+        _info.selected = true;
     }
 
     public void Deselect()
     {
-        info.selected = false;
-        currentOwner.DeselectCity(gameObject);
-        circleSprite.color = info.CastleColor;
-        if (castleColorSprite != null)
-            castleColorSprite.color = info.CurrentColor;
+        _info.selected = false;
+        _currentOwner.DeselectCity(gameObject);
+        _circleSprite.color = _info.CastleColor;
+        if (_castleColorSprite != null)
+            _castleColorSprite.color = _info.CurrentColor;
     }
 
     void SetColor(Color col)
     {
-        info.CastleColor = col;
-        info.CurrentColor = info.CastleColor;
+        _info.CastleColor = col;
+        _info.CurrentColor = _info.CastleColor;
 
-        circleSprite.color = info.CastleColor;
-        if (castleColorSprite != null)
-            castleColorSprite.color = info.CastleColor;
+        _circleSprite.color = _info.CastleColor;
+        if (_castleColorSprite != null)
+            _castleColorSprite.color = _info.CastleColor;
     }
 
     public void SetBaseOwner(BasePlayer owner)
     {
-        info.Owner = owner;
+        _info.Owner = owner;
         SetOwner(owner);
     }
 
     public void SetOwner(BasePlayer newOwner)
     {
-        if (currentOwner != null)
-            currentOwner.LostCity(gameObject);
-        currentOwner = newOwner;
+        if (_currentOwner != null)
+            _currentOwner.LostCity(gameObject);
+        _currentOwner = newOwner;
         UpdateGrowthRate();
-        currentOwner.ControlledCities.Add(gameObject);
+        _currentOwner.ControlledCities.Add(gameObject);
         SetColor(newOwner.GetPlayerColor());
         Deselect();
     }
 
     public BasePlayer GetOwner()
     {
-        return currentOwner;
+        return _currentOwner;
     }
 
 
@@ -152,11 +152,11 @@ public class CastleSc : MonoBehaviour
     {
         get
         {
-            return info.CurrentPopulation;
+            return _info.CurrentPopulation;
         }
         set
         {
-            info.CurrentPopulation = value;
+            _info.CurrentPopulation = value;
         }
     }
 
@@ -164,32 +164,32 @@ public class CastleSc : MonoBehaviour
     {
         get
         {
-            return info.BasePopulation;
+            return _info.BasePopulation;
         }
         set
         {
-            info.BasePopulation = value;
+            _info.BasePopulation = value;
         }
     }
 
     public CastleSize CastleType
     {
-        get { return info.Type; }
-        set { info.Type = value; }
+        get { return _info.Type; }
+        set { _info.Type = value; }
     }
 
     public bool IsSelected
     {
         get
         {
-            return info.selected;
+            return _info.selected;
         }
     }
 
 
     internal void Visit(ArmySc armyScript)
     {
-        if (armyScript.GetOwner() == currentOwner)
+        if (armyScript.GetOwner() == _currentOwner)
         {
             if (armyScript.Destination == gameObject)
             {
@@ -201,13 +201,13 @@ public class CastleSc : MonoBehaviour
                 return;
         }
 
-        if (armyScript.Destination != gameObject && currentOwner.IsGaia)
+        if (armyScript.Destination != gameObject && _currentOwner.IsGaia)
             return;
 
 
         if (armyScript.Amount > CurrentPopulation)
         {
-            currentOwner.LostCity(gameObject);
+            _currentOwner.LostCity(gameObject);
             SetOwner(armyScript.GetOwner());
             armyScript.GetOwner().ControlledCities.Add(gameObject);
             //setOwner(armyInput.getOwner());
@@ -222,29 +222,29 @@ public class CastleSc : MonoBehaviour
 
     internal void SetBasePopulation(float p)
     {
-        info.BasePopulation = p;
-        CurrentPopulation = info.BasePopulation;
+        _info.BasePopulation = p;
+        CurrentPopulation = _info.BasePopulation;
         UpdateGrowthRate();
 
     }
 
     void UpdateGrowthRate()
     {
-        if (currentOwner == null)
+        if (_currentOwner == null)
             return;
-        if (currentOwner.IsGaia)
-            info.growthRate = info.BasePopulation / 8000;
+        if (_currentOwner.IsGaia)
+            _info.growthRate = _info.BasePopulation / 8000;
         else
-            info.growthRate = info.BasePopulation / 2000;
+            _info.growthRate = _info.BasePopulation / 2000;
     }
 
     internal void UpdateTransformInfo(Transform transform)
     {
-        info.Position = transform;
+        _info.Position = transform;
     }
 
     public CastleInfo GetInfo()
     {
-        return info;
+        return _info;
     }
 }
