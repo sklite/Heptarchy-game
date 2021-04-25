@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ArmySpawnerSc : MonoBehaviour
 {
-    float _armySpeed = 0.004f;
+    float _armySpeed = 0.044f;
     public GameObject armyPrefab;
     // Use this for initialization
     void Start()

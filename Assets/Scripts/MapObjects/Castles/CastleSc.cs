@@ -3,16 +3,14 @@ using Assets.Scripts.Players;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class CastleSc : MonoBehaviour
 {
     CastleInfo _info = new CastleInfo();
-
     BasePlayer _currentOwner;
-
-    GameObject _label;
-   // UnityEngine.UI.Text _populationText;
+    TextMeshPro _populationText;
     Gradient _gradient;
 
     SpriteRenderer _circleSprite, _castleColorSprite;
@@ -58,18 +56,15 @@ public class CastleSc : MonoBehaviour
 
     public void InitText()
     {
+        _populationText = GetComponentInChildren<TextMeshPro>();
+        //var widthBy2 = SettingsSc.ScreenWidth / 2;
+        //var heightBy2 = SettingsSc.ScreenHeight / 2;
 
-        var widthBy2 = SettingsSc.ScreenWidth / 2;
-        var heightBy2 = SettingsSc.ScreenHeight / 2;
+        //   float x = (widthBy2 + transform.position.x) / (SettingsSc.ScreenWidth);
+        //    float y = (heightBy2 + transform.position.y) / (SettingsSc.ScreenHeight);
 
-        float x = (widthBy2 + transform.position.x) / (SettingsSc.ScreenWidth);
-        float y = (heightBy2 + transform.position.y) / (SettingsSc.ScreenHeight);
-
-        y -= 0.0003f;
-        y -= 0.05f;
-
-        //_label = new GameObject("CastleSc population label");
-        //_label.AddComponent<UnityEngine.UI.Text>();
+        //   y -= 0.0003f;
+        //   y -= 0.05f;
 
         //_label.transform.SetParent(_mapCastles.transform);
         //_label.transform.position = new Vector3(Mathf.Abs(x), Mathf.Abs(y), 0.0f);
@@ -89,7 +84,7 @@ public class CastleSc : MonoBehaviour
 
         if (CurrentPopulation < _info.BasePopulation)
             CurrentPopulation += _info.growthRate;
-        //_populationText.text = Mathf.RoundToInt(CurrentPopulation).ToString();
+        _populationText.text = Mathf.RoundToInt(CurrentPopulation).ToString();
         if (_info.selected)
         {
             var timeFraction = Time.realtimeSinceStartup - (int)Time.realtimeSinceStartup;
@@ -150,14 +145,8 @@ public class CastleSc : MonoBehaviour
 
     public float CurrentPopulation
     {
-        get
-        {
-            return _info.CurrentPopulation;
-        }
-        set
-        {
-            _info.CurrentPopulation = value;
-        }
+        get => _info.CurrentPopulation;
+        set => _info.CurrentPopulation = value;
     }
 
     public float BasePopulation

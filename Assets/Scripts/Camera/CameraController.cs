@@ -29,8 +29,10 @@ public class CameraController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-     //   ui = GameObject.Find("Controls");
+        //   ui = GameObject.Find("Controls");
+        Application.targetFrameRate = 30;
 
+        QualitySettings.vSyncCount = 0;
 
     }
 
