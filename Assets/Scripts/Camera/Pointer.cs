@@ -84,6 +84,8 @@ public class Pointer : MonoBehaviour
             _inputFinishPoint = Input.mousePosition;
             _inputFinishPoint.y = Screen.height - _inputFinishPoint.y;
 
+
+
             var minX = Mathf.Min(_inputStartPoint.x, _inputFinishPoint.x);
             var minY = Mathf.Min(_inputStartPoint.y, _inputFinishPoint.y);
 
@@ -91,13 +93,6 @@ public class Pointer : MonoBehaviour
             _selectionRect = new Rect(minX, minY,
                 Mathf.Abs(_inputStartPoint.x - _inputFinishPoint.x),
                 Mathf.Abs(_inputStartPoint.y - _inputFinishPoint.y));
-
-
-            Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        }
-        else
-        {
 
         }
     }
@@ -214,6 +209,10 @@ public class Pointer : MonoBehaviour
 
         //_staticRectStyle.normal.background = _staticRectTexture;
         //  if (position)
+
+
+
+
         GUI.Box(position, GUIContent.none, _staticRectStyle);
 
 

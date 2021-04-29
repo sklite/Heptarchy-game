@@ -9,11 +9,11 @@ public class ScrollerScript : MonoBehaviour
 
     bool _isPressed;
     Vector3 _direction;
-    CameraController _camera;
+    CameraControllerSc _camera;
     // Start is called before the first frame update
     void Start()
     {
-        _camera = GameObject.Find("Main Camera").GetComponent<CameraController>();
+        _camera = GameObject.Find("Main Camera").GetComponent<CameraControllerSc>();
         SetDirection(Direction);
         //ui = GameObject.Find("UI");
     }

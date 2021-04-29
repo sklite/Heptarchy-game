@@ -16,6 +16,7 @@ public class CastleSpawnerSc : MonoBehaviour
 	float _villageSize = 0.5f;
 	float _barrackSize = 0.8f;
 	float _castleSize = 1.2f;
+    float _sizeScale = 1.7f;
 
 	Dictionary<CastleSize, GameObject> _typesDict;
 
@@ -72,7 +73,7 @@ public class CastleSpawnerSc : MonoBehaviour
 
 			_castles[i] = Instantiate(_typesDict[castleType], pt, Quaternion.Euler(new Vector3(0, 0, 0)));
 
-			_castles[i].transform.localScale = new Vector3(population, population, 0);
+			_castles[i].transform.localScale = new Vector3(population * _sizeScale, population * _sizeScale, 0);
 
 			var castleScript = _castles[i].GetComponent<CastleSc>();
 			castleScript.CastleType = castleType;

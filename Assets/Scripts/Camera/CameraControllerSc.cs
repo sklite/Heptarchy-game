@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
+public class CameraControllerSc : MonoBehaviour
 {
     Vector2 _botLeft, _topRight;
 
@@ -15,22 +15,30 @@ public class CameraController : MonoBehaviour
 
 
 
-    public CameraController()
+    public CameraControllerSc()
     {
         _bordersCheck = new List<Func<Vector3, bool>>
         {
-            direction => direction.x > 0 && _topRight.x > MapSc.MapSize.x - _borderEpsilon,
-            direction => direction.x < 0 && _botLeft.x < -MapSc.MapSize.x + _borderEpsilon,
-            direction => direction.y > 0 && _topRight.y > MapSc.MapSize.y - _borderEpsilon,
-            direction => direction.y < 0 && _botLeft.y < -MapSc.MapSize.y + _borderEpsilon
+            direction => direction.x > 0 && _topRight.x > MapSc.ScrollableMapSize.x - _borderEpsilon,
+            direction => direction.x < 0 && _botLeft.x < -MapSc.ScrollableMapSize.x + _borderEpsilon,
+            direction => direction.y > 0 && _topRight.y > MapSc.ScrollableMapSize.y - _borderEpsilon,
+            direction => direction.y < 0 && _botLeft.y < -MapSc.ScrollableMapSize.y + _borderEpsilon
         };
+
+        //_bordersCheck = new List<Func<Vector3, bool>>
+        //{
+        //    direction => direction.x > 0 && _topRight.x > MapSc.MapSize.x - _borderEpsilon,
+        //    direction => direction.x < 0 && _botLeft.x < -MapSc.MapSize.x + _borderEpsilon,
+        //    direction => direction.y > 0 && _topRight.y > MapSc.MapSize.y - _borderEpsilon,
+        //    direction => direction.y < 0 && _botLeft.y < -MapSc.MapSize.y + _borderEpsilon
+        //};
 
     }
     // Use this for initialization
     void Start()
     {
         //   ui = GameObject.Find("Controls");
-        Application.targetFrameRate = 30;
+        Application.targetFrameRate = 60;
 
         QualitySettings.vSyncCount = 0;
 
@@ -58,9 +66,14 @@ public class CameraController : MonoBehaviour
         transform.Translate(direction * Time.deltaTime * 2);
     }
 
-
-    public float Right
+    public void Move(Vector2 direction)
     {
-        get { return transform.position.x + Camera.main.orthographicSize; }
+        transform.Translate(direction, Space.Self);
     }
+
+
+    //public float Right
+    //{
+    //    get { return transform.position.x + Camera.main.orthographicSize; }
+    //}
 }
