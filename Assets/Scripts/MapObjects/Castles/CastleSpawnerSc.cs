@@ -62,7 +62,7 @@ public class CastleSpawnerSc : MonoBehaviour
 		{
 
 			float population = 0.8f + Random.value * 0.7f;
-			if (!GetFreePoint(population, out Vector3 pt))
+			if (!GetFreePoint(population * _sizeScale, out Vector3 pt))
 				continue;
 
 			var castleType = Random.value > 0.5 ? CastleSize.Village1 : CastleSize.Village2;
