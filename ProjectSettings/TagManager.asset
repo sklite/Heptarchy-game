@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Settings
   - Castles
+  - AiButton
+  - ColorButton
   layers:
   - Default
   - TransparentFX
@@ -54,4 +56,10 @@ TagManager:
     locked: 0
   - name: CastleLayer
     uniqueID: 3063846659
+    locked: 0
+  - name: Ui-front
+    uniqueID: 2654161501
+    locked: 0
+  - name: Ui-back
+    uniqueID: 1285382485
     locked: 0

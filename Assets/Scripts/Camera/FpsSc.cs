@@ -16,8 +16,8 @@ public class FpsSc : MonoBehaviour
         
     }
 
-    string label = "";
-    float count;
+    string _label = "";
+    float _count;
 
     IEnumerator Start()
     {
@@ -27,12 +27,12 @@ public class FpsSc : MonoBehaviour
             if (Time.timeScale == 1)
             {
                 yield return new WaitForSeconds(0.1f);
-                count = (1 / Time.deltaTime);
-                label = "FPS :" + (Mathf.Round(count));
+                _count = (1 / Time.deltaTime);
+                _label = "FPS :" + (Mathf.Round(_count));
             }
             else
             {
-                label = "Pause";
+                _label = "Pause";
             }
             yield return new WaitForSeconds(0.5f);
         }
@@ -40,6 +40,6 @@ public class FpsSc : MonoBehaviour
 
     void OnGUI()
     {
-        GUI.Label(new Rect(5, 40, 100, 25), label);
+        GUI.Label(new Rect(5, 40, 100, 25), _label);
     }
 }

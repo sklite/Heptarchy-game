@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 873708}
   m_Layer: 5
   m_Name: btAi4
-  m_TagString: Untagged
+  m_TagString: AiButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -205,7 +205,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 873709}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 773458184}
+        m_TargetAssemblyTypeName: ButtonHandlerSc, Assembly-CSharp
+        m_MethodName: ButtonAiPressed
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 873706}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &873709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -394,7 +406,7 @@ GameObject:
   - component: {fileID: 101828016}
   m_Layer: 5
   m_Name: btColor4
-  m_TagString: Untagged
+  m_TagString: ColorButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -461,7 +473,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 101828017}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 773458184}
+        m_TargetAssemblyTypeName: ButtonHandlerSc, Assembly-CSharp
+        m_MethodName: ButtonColorPressed
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 101828014}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &101828017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -548,7 +572,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -570,7 +594,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 678434921}
-  m_PlaneDistance: 100
+  m_PlaneDistance: 20
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -661,8 +685,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Normal
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f69cd0ba08709644788cde7229fd109b, type: 2}
+  m_sharedMaterial: {fileID: 6007892425000684156, guid: f69cd0ba08709644788cde7229fd109b,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -686,8 +711,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 42
-  m_fontSizeBase: 42
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -795,8 +820,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Normal
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f69cd0ba08709644788cde7229fd109b, type: 2}
+  m_sharedMaterial: {fileID: 6007892425000684156, guid: f69cd0ba08709644788cde7229fd109b,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -820,8 +846,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 42
-  m_fontSizeBase: 42
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -929,8 +955,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Normal
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f69cd0ba08709644788cde7229fd109b, type: 2}
+  m_sharedMaterial: {fileID: 6007892425000684156, guid: f69cd0ba08709644788cde7229fd109b,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -954,8 +981,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 42
-  m_fontSizeBase: 42
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1004,6 +1031,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 245966794}
   m_CullTransparentMesh: 1
+--- !u!1 &271686092
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 271686093}
+  - component: {fileID: 271686095}
+  - component: {fileID: 271686094}
+  m_Layer: 5
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &271686093
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271686092}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1242964079}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 45.00911, y: 150.41414}
+  m_SizeDelta: {x: 230.0158, y: 9.6642}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &271686094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271686092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: f1c6909d44e77444096f6b47b2a4b1f9, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &271686095
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271686092}
+  m_CullTransparentMesh: 1
 --- !u!1 &360050139
 GameObject:
   m_ObjectHideFlags: 0
@@ -1018,7 +1120,7 @@ GameObject:
   - component: {fileID: 360050141}
   m_Layer: 5
   m_Name: btAi3
-  m_TagString: Untagged
+  m_TagString: AiButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1086,7 +1188,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 360050142}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 773458184}
+        m_TargetAssemblyTypeName: ButtonHandlerSc, Assembly-CSharp
+        m_MethodName: ButtonAiPressed
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 360050139}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &360050142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1190,7 +1304,7 @@ MonoBehaviour:
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
+    m_FadeDuration: 0.5
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
@@ -1207,9 +1321,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1571114316}
-        m_TargetAssemblyTypeName: MainMenuSc, Assembly-CSharp
-        m_MethodName: StartGame
+      - m_Target: {fileID: 773458184}
+        m_TargetAssemblyTypeName: ButtonHandlerSc, Assembly-CSharp
+        m_MethodName: StartButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1337,7 +1451,7 @@ GameObject:
   - component: {fileID: 466722883}
   m_Layer: 5
   m_Name: btColor2
-  m_TagString: Untagged
+  m_TagString: ColorButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1404,7 +1518,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 466722884}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 773458184}
+        m_TargetAssemblyTypeName: ButtonHandlerSc, Assembly-CSharp
+        m_MethodName: ButtonColorPressed
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 466722881}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &466722884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1477,8 +1603,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 201, y: -17.166}
-  m_SizeDelta: {x: 99.03, y: 34.3313}
+  m_AnchoredPosition: {x: 192.39, y: -12.399994}
+  m_SizeDelta: {x: 111.6423, y: 34.331}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &532889197
 MonoBehaviour:
@@ -1502,8 +1628,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Color
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f69cd0ba08709644788cde7229fd109b, type: 2}
+  m_sharedMaterial: {fileID: 6007892425000684156, guid: f69cd0ba08709644788cde7229fd109b,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1527,8 +1654,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 33
+  m_fontSizeBase: 33
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1672,7 +1799,7 @@ GameObject:
   - component: {fileID: 766408976}
   - component: {fileID: 766408975}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: SetupPlayersTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1694,8 +1821,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000026703, y: 222}
-  m_SizeDelta: {x: 335.091, y: 50.003}
+  m_AnchoredPosition: {x: 25.397596, y: 225.90462}
+  m_SizeDelta: {x: 495.1407, y: 67.1957}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &766408975
 MonoBehaviour:
@@ -1719,8 +1846,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Setup players
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f69cd0ba08709644788cde7229fd109b, type: 2}
+  m_sharedMaterial: {fileID: 6007892425000684156, guid: f69cd0ba08709644788cde7229fd109b,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1744,8 +1872,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 70
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1794,6 +1922,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 766408973}
   m_CullTransparentMesh: 1
+--- !u!1 &773458182
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 773458183}
+  - component: {fileID: 773458184}
+  m_Layer: 5
+  m_Name: ButtonHandlers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &773458183
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 773458182}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1571114315}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &773458184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 773458182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f33d2df9dea68f40b5ba39032b73741, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &800577763
 GameObject:
   m_ObjectHideFlags: 0
@@ -1808,7 +1984,7 @@ GameObject:
   - component: {fileID: 800577765}
   m_Layer: 5
   m_Name: btColor5
-  m_TagString: Untagged
+  m_TagString: ColorButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1875,7 +2051,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 800577766}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 773458184}
+        m_TargetAssemblyTypeName: ButtonHandlerSc, Assembly-CSharp
+        m_MethodName: ButtonColorPressed
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 800577763}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &800577766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1928,7 +2116,7 @@ GameObject:
   - component: {fileID: 831677199}
   m_Layer: 5
   m_Name: btColor3
-  m_TagString: Untagged
+  m_TagString: ColorButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1995,7 +2183,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 831677200}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 773458184}
+        m_TargetAssemblyTypeName: ButtonHandlerSc, Assembly-CSharp
+        m_MethodName: ButtonColorPressed
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 831677197}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &831677200
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2048,7 +2248,7 @@ GameObject:
   - component: {fileID: 855696753}
   m_Layer: 5
   m_Name: btColor1
-  m_TagString: Untagged
+  m_TagString: ColorButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2115,7 +2315,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 855696754}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 773458184}
+        m_TargetAssemblyTypeName: ButtonHandlerSc, Assembly-CSharp
+        m_MethodName: ButtonColorPressed
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 855696751}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &855696754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2293,8 +2505,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Normal
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f69cd0ba08709644788cde7229fd109b, type: 2}
+  m_sharedMaterial: {fileID: 6007892425000684156, guid: f69cd0ba08709644788cde7229fd109b,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2318,8 +2531,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 42
-  m_fontSizeBase: 42
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2382,7 +2595,7 @@ GameObject:
   - component: {fileID: 1118553763}
   m_Layer: 5
   m_Name: btAi1
-  m_TagString: Untagged
+  m_TagString: AiButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2450,7 +2663,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1118553764}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 773458184}
+        m_TargetAssemblyTypeName: ButtonHandlerSc, Assembly-CSharp
+        m_MethodName: ButtonAiPressed
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1118553761}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1118553764
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2603,12 +2828,13 @@ RectTransform:
   - {fileID: 831677198}
   - {fileID: 101828015}
   - {fileID: 800577764}
+  - {fileID: 271686093}
   m_Father: {fileID: 957561394}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3.0929, y: -17.935}
+  m_AnchoredPosition: {x: -3.0929, y: -35.4}
   m_SizeDelta: {x: 570.3094, y: 429.8665}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1276488854
@@ -2625,7 +2851,7 @@ GameObject:
   - component: {fileID: 1276488856}
   m_Layer: 5
   m_Name: btAi5
-  m_TagString: Untagged
+  m_TagString: AiButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2693,7 +2919,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1276488857}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 773458184}
+        m_TargetAssemblyTypeName: ButtonHandlerSc, Assembly-CSharp
+        m_MethodName: ButtonAiPressed
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1276488854}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1276488857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2761,6 +2999,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 957561394}
+  - {fileID: 773458183}
   m_Father: {fileID: 131158582}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2831,7 +3070,7 @@ GameObject:
   - component: {fileID: 1667575935}
   m_Layer: 5
   m_Name: btAi2
-  m_TagString: Untagged
+  m_TagString: AiButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2899,7 +3138,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1667575936}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 773458184}
+        m_TargetAssemblyTypeName: ButtonHandlerSc, Assembly-CSharp
+        m_MethodName: ButtonAiPressed
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1667575933}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1667575936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3205,8 +3456,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Normal
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f69cd0ba08709644788cde7229fd109b, type: 2}
+  m_sharedMaterial: {fileID: 6007892425000684156, guid: f69cd0ba08709644788cde7229fd109b,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3230,8 +3482,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 42
-  m_fontSizeBase: 42
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3389,7 +3641,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -159.02, y: -17.166}
+  m_AnchoredPosition: {x: -159.02, y: -12.399994}
   m_SizeDelta: {x: 36.1346, y: 34.3313}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2101526204
@@ -3414,8 +3666,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Ai
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f69cd0ba08709644788cde7229fd109b, type: 2}
+  m_sharedMaterial: {fileID: 6007892425000684156, guid: f69cd0ba08709644788cde7229fd109b,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3439,8 +3692,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 33
+  m_fontSizeBase: 33
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
