@@ -119,11 +119,10 @@ public class ButtonHandlerSc : MonoBehaviour
                 Color.red,
                 Color.green,
                 Color.yellow,
+                new Color(255/255.0f, 159/255.0f,255/255.0f),
+                new Color(165/255.0f, 42/255.0f,42/255.0f),
                 Color.cyan,
-                new Color(255/255.0f, 155/255.0f,6/255.0f),
-                new Color(200/255.0f, 159/255.0f,123/255.0f),
-                new Color(0/255.0f, 128/255.0f,0/255.0f),
-                new Color(255/255.0f, 159/255.0f,255/255.0f)
+                new Color(167/255.0f, 113/255.0f,254/255.0f),
             };
         }
 

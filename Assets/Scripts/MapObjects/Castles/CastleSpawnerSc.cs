@@ -7,6 +7,7 @@ public class CastleSpawnerSc : MonoBehaviour
 {
 	public int castlesCount;
 	public GameObject[] castlesPrefaps;
+	public float SizeScale = 1.7f;
 	GameObject _widthLabel;
 	TheGameSc _gameScript;
 	GameObject[] _castles;
@@ -16,7 +17,7 @@ public class CastleSpawnerSc : MonoBehaviour
 	float _villageSize = 0.5f;
 	float _barrackSize = 0.8f;
 	float _castleSize = 1.2f;
-    float _sizeScale = 1.7f;
+
 
 	Dictionary<CastleSize, GameObject> _typesDict;
 
@@ -62,7 +63,7 @@ public class CastleSpawnerSc : MonoBehaviour
 		{
 
 			float population = 0.8f + Random.value * 0.7f;
-			if (!GetFreePoint(population * _sizeScale, out Vector3 pt))
+			if (!GetFreePoint(population * SizeScale, out Vector3 pt))
 				continue;
 
 			var castleType = Random.value > 0.5 ? CastleSize.Village1 : CastleSize.Village2;
@@ -73,7 +74,7 @@ public class CastleSpawnerSc : MonoBehaviour
 
 			_castles[i] = Instantiate(_typesDict[castleType], pt, Quaternion.Euler(new Vector3(0, 0, 0)));
 
-			_castles[i].transform.localScale = new Vector3(population * _sizeScale, population * _sizeScale, 0);
+			_castles[i].transform.localScale = new Vector3(population * SizeScale, population * SizeScale, 0);
 
 			var castleScript = _castles[i].GetComponent<CastleSc>();
 			castleScript.CastleType = castleType;

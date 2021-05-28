@@ -1105,12 +1105,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccaa79bfbfc0a5447b0f868458ea142f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  castlesCount: 60
+  castlesCount: 50
   castlesPrefaps:
   - {fileID: 4030451349662988357, guid: 4459a8a6b88a26347a715af85e1fdab1, type: 3}
   - {fileID: 4030451349662988357, guid: 511de9ff06cf41647afb5d3c42bc7aab, type: 3}
   - {fileID: 4030451349662988357, guid: 9029629c0d65b914f83d8d90d30f2938, type: 3}
   - {fileID: 4030451349662988357, guid: 8889debf60e2fc54f8b591fe1c6bb01a, type: 3}
+  SizeScale: 2
 --- !u!4 &1436533441 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8730179910242829079, guid: 1c88e95cb20caa847a1e54eeb7e1c343,

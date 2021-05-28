@@ -40,8 +40,7 @@ namespace Assets.Scripts.Players
         {
             _brains = newBrains;
             _brains.SetOwner(this);
-            if (aiEnumeration != AiEnumeration.NoAi)
-                canGo = true;
+            canGo = aiEnumeration != AiEnumeration.NoAi;
 
         }
 
