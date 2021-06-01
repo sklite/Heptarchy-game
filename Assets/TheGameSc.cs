@@ -60,7 +60,7 @@ public class TheGameSc : MonoBehaviour
             };
 
             (_players[1] as AiPlayer).SetBrains(new SwarmLogic(this), AiEnumeration.NoAi);
-            (_players[2] as AiPlayer).SetBrains(new SwarmLogic(this), AiEnumeration.Easy);
+            (_players[2] as AiPlayer).SetBrains(new StrategistLogic(this), AiEnumeration.Normal);
             (_players[3] as AiPlayer).SetBrains(new StrategistLogic(this), AiEnumeration.Normal);
             (_players[4] as AiPlayer).SetBrains(new StrategistLogic(this), AiEnumeration.Normal);
         }
@@ -72,7 +72,7 @@ public class TheGameSc : MonoBehaviour
     {
 
         _counter++;
-        if (_counter % 500 != 0)
+        if (_counter % 30 != 0)
         {
 
             if (_counter == int.MaxValue)

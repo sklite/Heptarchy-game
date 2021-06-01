@@ -38,8 +38,8 @@ public class Pointer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.Escape))
-        //    SettingsSc.SetPause(!SettingsSc.IsPaused);
+        if (Input.GetKeyDown(KeyCode.Escape))
+            SettingsSc.SetPause(!SettingsSc.IsPaused);
 
         if (Input.GetMouseButtonDown(0))
         {

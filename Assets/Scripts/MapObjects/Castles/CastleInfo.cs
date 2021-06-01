@@ -18,10 +18,10 @@ namespace Assets.Scripts.MapObjects.Castles
 
         public float BasePopulation;
 
-        public CastleSize Type;
+        public CastleType Type;
 
         /// <summary>
-        /// Первоначальный владелец замка
+        /// Владелец замка
         /// </summary>
         public BasePlayer Owner;
 

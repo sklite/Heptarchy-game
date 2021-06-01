@@ -24,11 +24,11 @@ namespace Assets.Scripts.Players.Ai
             Vector2 center = FindCenter();
 
 
-            float koeff = 5000 - DistanceCalculator.CalcDistance(center.x, city.transform.position.x,
+            float koeff = 25 - DistanceCalculator.CalcDistance(center.x, city.transform.position.x,
                 center.y, city.transform.position.y);
             //float armies = calcArmiesSumm();
 
-            koeff -= city.CurrentPopulation / 10.0f;
+            koeff -= city.CurrentPopulation;
 
             koeff += city.BasePopulation * 3;
 

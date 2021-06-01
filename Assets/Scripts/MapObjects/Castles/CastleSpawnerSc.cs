@@ -1,39 +1,48 @@
+using System;
 using Assets.Scripts.MapObjects.Castles;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Assets.Scripts.Memory;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CastleSpawnerSc : MonoBehaviour
 {
 	public int castlesCount;
+
 	public GameObject[] castlesPrefaps;
-	public float SizeScale = 1.7f;
+	public float[] castlesFrequences;
+	public float[] castlesSizes;
+    public float OverallSizeScale;
+
+
 	GameObject _widthLabel;
 	TheGameSc _gameScript;
 	GameObject[] _castles;
-    private MapSc _map;
-	//	SettingsSc gameSettings;
-	// Use this for initialization
-	float _villageSize = 0.5f;
-	float _barrackSize = 0.8f;
-	float _castleSize = 1.2f;
 
 
-	Dictionary<CastleSize, GameObject> _typesDict;
+    private Dictionary<CastleType, GameObject> _typesDict = new Dictionary<CastleType, GameObject>();
+    private Dictionary<CastleType, float> _typePopulationDict = new Dictionary<CastleType, float>();
 
 	void Start()
-	{
-		_typesDict = new Dictionary<CastleSize, GameObject>{
-			{CastleSize.Village1, castlesPrefaps[3]},
-			{CastleSize.Village2, castlesPrefaps[2]},
-			{CastleSize.Barracks, castlesPrefaps[1]},
-			{CastleSize.CastleSc, castlesPrefaps[0]}
-		};
+    {
+        if (castlesPrefaps.Length != castlesFrequences.Length)
+            throw new Exception("You should provide all castles and their frequencies");
 
-		_villageSize = 1.1f;
-		_barrackSize = 1.3f;
-		_castleSize = 1.4f;
-        _map = GameObject.Find("Map").GetComponent<MapSc>();
+        if (castlesPrefaps.Length != castlesSizes.Length)
+            throw new Exception("You should provide all castles and their sizes!");
+
+
+        for (var i = 0; i < castlesPrefaps.Length; i++)
+        {
+            var castleType = castlesPrefaps[i].GetComponent<CastleSc>().CastleType;
+
+            _typesDict[castleType] = castlesPrefaps[i];
+            _typePopulationDict[castleType] = castlesSizes[i];
+        }
+
+        //_map = GameObject.Find("Map").GetComponent<MapSc>();
 
 		_castles = new GameObject[castlesCount];
 		var theGame = GameObject.Find("TheGame");
@@ -43,7 +52,6 @@ public class CastleSpawnerSc : MonoBehaviour
 		AssignCitiesToPlayers();
 
 		InitPlayers();
-
 	}
 
 	private void InitPlayers()
@@ -58,23 +66,26 @@ public class CastleSpawnerSc : MonoBehaviour
 	private void GenerateCitiesPositions()
 	{
 		SettingsSc.Stored.CastleInfos.Clear();
+
+        
+
+
 		var gaiaPlayer = _gameScript.GetGaia();
 		for (int i = 0; i < castlesCount; i++)
-		{
+        {
+            var castleType = GetNewCastleType();
+            var populationFactor = _typePopulationDict[castleType];
 
-			float population = 0.8f + Random.value * 0.7f;
-			if (!GetFreePoint(population * SizeScale, out Vector3 pt))
+			float population = populationFactor + Random.value * 0.7f;
+
+            if (!GetFreePoint(population * OverallSizeScale * 1.5f, out Vector3 pt))
 				continue;
-
-			var castleType = Random.value > 0.5 ? CastleSize.Village1 : CastleSize.Village2;
-			if (population > _castleSize)
-				castleType = CastleSize.CastleSc;
-			else if (population > _barrackSize)
-				castleType = CastleSize.Barracks;
 
 			_castles[i] = Instantiate(_typesDict[castleType], pt, Quaternion.Euler(new Vector3(0, 0, 0)));
 
-			_castles[i].transform.localScale = new Vector3(population * SizeScale, population * SizeScale, 0);
+
+
+			_castles[i].transform.localScale = new Vector3(population * OverallSizeScale, population * OverallSizeScale, 0);
 
 			var castleScript = _castles[i].GetComponent<CastleSc>();
 			castleScript.CastleType = castleType;
@@ -83,11 +94,27 @@ public class CastleSpawnerSc : MonoBehaviour
 			castleScript.UpdateTransformInfo(castleScript.transform);
 
 			SettingsSc.Stored.CastleInfos.Add(castleScript.GetInfo());
-
 		}
 	}
 
 
+    CastleType GetNewCastleType()
+    {
+        var chancesSum = castlesFrequences.Sum();
+
+        var randomNum = Random.Range(0, chancesSum);
+        var summ = 0.0f;
+
+        for (int i = 0; i < _typesDict.Count; i++)
+        {
+            summ += castlesFrequences[i];
+            if (randomNum <= summ)
+                return _typesDict.ElementAt(i).Key;
+        }
+
+
+        return CastleType.Village1;
+    }
 
 	private void AssignCitiesToPlayers()
 	{
@@ -108,10 +135,10 @@ public class CastleSpawnerSc : MonoBehaviour
         //}
 	}
 
-	private bool GetFreePoint(float citySize, out Vector3 pt)
+	private bool GetFreePoint(float citySize, out Vector3 resultPt)
 	{
 		int maxAttemptCount = 100;
-		pt = new Vector3(1, 1, 0);
+		resultPt = new Vector3(1, 1, 0);
 		while (maxAttemptCount > 0)
 		{
 			maxAttemptCount--;
@@ -119,8 +146,8 @@ public class CastleSpawnerSc : MonoBehaviour
             var xCoord = Random.Range(MapSc.HabitableMapSize.xMin, MapSc.HabitableMapSize.xMax);
             var yCoord = Random.Range(MapSc.HabitableMapSize.yMin, MapSc.HabitableMapSize.yMax);
 
-			pt = new Vector3(xCoord, yCoord, 0);
-			if (CanPlaceHere(pt, citySize))
+			resultPt = new Vector3(xCoord, yCoord, 0);
+			if (CanPlaceHere(resultPt, citySize))
 			{
               //  return new Vector3(25, 16, 0);
 				return true;
@@ -132,7 +159,6 @@ public class CastleSpawnerSc : MonoBehaviour
 
 	bool CanPlaceHere(Vector3 pt, float size)
 	{
-
 		for (int i = 0; i < castlesCount; i++)
 		{
 			var curCastle = _castles[i];
@@ -157,40 +183,40 @@ public class CastleSpawnerSc : MonoBehaviour
 
 	}
 
-	//public void CleanMap(CastleStoredData castleStoredData)
-	//{
+    public void CleanMap(CastleStoredData castleStoredData)
+    {
 
-	//	for (int i = 0; i < gameScript.GetNonGaiaPlayers().Length; i++)
-	//	{
-	//		var player = gameScript.GetNonGaiaPlayers()[i];
-	//		player.ControlledCities.Clear();
-	//		player.SelectedCities.Clear();
-	//	}
+        for (int i = 0; i < _gameScript.GetNonGaiaPlayers().Length; i++)
+        {
+            var player = _gameScript.GetNonGaiaPlayers()[i];
+            player.ControlledCities.Clear();
+            player.SelectedCities.Clear();
+        }
 
-	//	//Чистим замки
-	//	for (int i = 0; i < castleStoredData.CastleInfos.Count; i++)
-	//	{
-	//		var curCastle = castles[i];
-	//		if (curCastle == null)
-	//			continue;
-	//		var castleScript = curCastle.GetComponent<CastleSc>();
+        //Чистим замки
+        for (int i = 0; i < castleStoredData.CastleInfos.Count; i++)
+        {
+            var curCastle = _castles[i];
+            if (curCastle == null)
+                continue;
+            var castleScript = curCastle.GetComponent<CastleSc>();
 
-	//		var castleData = castleStoredData.CastleInfos[i];
-	//		castleScript.SetOwner(castleData.Owner);
-	//		castleScript.SetBasePopulation(castleData.BasePopulation);
-	//	}
+            var castleData = castleStoredData.CastleInfos[i];
+            castleScript.SetOwner(castleData.Owner);
+            castleScript.SetBasePopulation(castleData.BasePopulation);
+        }
 
-	//	var armySpawner = GameObject.Find("ArmySpawner").GetComponent<ArmySpawnerScript>();
-	//	var armies = armySpawner.GetArmies();
-	//	if (armies == null || armies.Length == 0)
-	//		return;
-	//	for (int i = 0; i < armies.Length; i++)
-	//	{
-	//		var armyObj = armies[i];
-	//		Destroy(armyObj);
-	//	}
+        var armySpawner = GameObject.Find("ArmySpawner").GetComponent<ArmySpawnerSc>();
+        var armies = armySpawner.GetArmies();
+        if (armies == null || armies.Length == 0)
+            return;
+        for (int i = 0; i < armies.Length; i++)
+        {
+            var armyObj = armies[i];
+            Destroy(armyObj);
+        }
 
 
-	//	SettingsSc.RegenerateMap = true;
-	//}
+        SettingsSc.RegenerateMap = true;
+    }
 }

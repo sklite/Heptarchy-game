@@ -8,13 +8,13 @@ using UnityEngine;
 
 public class CastleSc : MonoBehaviour
 {
+    public CastleType CastleType;
+
     CastleInfo _info = new CastleInfo();
     BasePlayer _currentOwner;
     TextMeshPro _populationText;
     Gradient _gradient;
-
     SpriteRenderer _circleSprite, _castleColorSprite;
-
     GameObject _mapCastles;
 
     void Awake()
@@ -28,11 +28,10 @@ public class CastleSc : MonoBehaviour
 
     void Start()
     {
-
-
         _mapCastles = GameObject.Find("Castles");
         InitText();
         _info.selected = false;
+        _info.Type = CastleType;
 
         _gradient = new Gradient();
 
@@ -161,11 +160,11 @@ public class CastleSc : MonoBehaviour
         }
     }
 
-    public CastleSize CastleType
-    {
-        get { return _info.Type; }
-        set { _info.Type = value; }
-    }
+    //public CastleSize CastleType
+    //{
+    //    get { return _info.Type; }
+    //    set { _info.Type = value; }
+    //}
 
     public bool IsSelected
     {

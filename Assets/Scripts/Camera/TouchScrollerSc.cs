@@ -22,6 +22,8 @@ public class TouchScrollerSc : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+
         if (Input.GetMouseButtonDown(0))
         {
             _previousMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);

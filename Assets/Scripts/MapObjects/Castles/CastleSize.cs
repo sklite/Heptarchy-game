@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.MapObjects.Castles
 {
-    public enum CastleSize
+    public enum CastleType
     {
         Village1,
-        Village2,
+        Tower,
         Barracks,
         CastleSc
     }
