@@ -226,6 +226,7 @@ GameObject:
   - component: {fileID: 6753185053552725720}
   - component: {fileID: 473496432566819272}
   - component: {fileID: 8377421038786521631}
+  - component: {fileID: 3862709002950033187}
   m_Layer: 9
   m_Name: PopulationText
   m_TagString: Untagged
@@ -386,6 +387,17 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 473496432566819272}
   m_maskType: 0
+--- !u!210 &3862709002950033187
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7500565809244077813}
+  m_Enabled: 1
+  m_SortingLayerID: -1231120637
+  m_SortingLayer: 4
+  m_SortingOrder: 0
 --- !u!1 &8505408189426807296
 GameObject:
   m_ObjectHideFlags: 0

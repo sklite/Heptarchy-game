@@ -24,13 +24,12 @@ namespace Assets.Scripts.Players.Ai
             Vector2 center = FindCenter();
 
 
-            float koeff = 25 - DistanceCalculator.CalcDistance(center.x, city.transform.position.x,
+            float koeff = 100 - DistanceCalculator.CalcDistance(center.x, city.transform.position.x,
                 center.y, city.transform.position.y);
             //float armies = calcArmiesSumm();
 
-            koeff -= city.CurrentPopulation;
-
-            koeff += city.BasePopulation * 3;
+            koeff -= city.CurrentPopulation * 0.2f;
+            koeff += city.BasePopulation;
 
             //  koeff += city.GetOwner().IsGaia ? 0 : 0.22f;
 
