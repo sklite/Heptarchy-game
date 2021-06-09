@@ -9,6 +9,7 @@ using UnityEngine;
 public class CastleSc : MonoBehaviour
 {
     public CastleType CastleType;
+    public int CastleNumber;
 
     CastleInfo _info = new CastleInfo();
     BasePlayer _currentOwner;

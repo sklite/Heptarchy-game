@@ -1,6 +1,7 @@
 using Assets.Scripts.Players;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.MapObjects.LiquidParticles;
 using UnityEngine;
 
 public class Pointer : MonoBehaviour
@@ -18,9 +19,13 @@ public class Pointer : MonoBehaviour
     TheGameSc _gameScript;
     HumanPlayer _humanPlayer;
     GameObject[] _castles;
+    LiquidParticleSpawner _particleSpawner;
+
     // Start is called before the first frame update
     void Start()
     {
+        _particleSpawner = GameObject.Find("LiquidSpawner").GetComponent<LiquidParticleSpawner>();
+
         _castles = GameObject.FindGameObjectsWithTag("Castles");
         _selectionRect = new Rect(0, 0, 0, 0);
 
@@ -43,6 +48,8 @@ public class Pointer : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
+            _particleSpawner.CreateLiquidParticle(Camera.main.ScreenToWorldPoint(Input.mousePosition), -1);
+
             _inputStartPoint = Input.mousePosition;
             _inputStartPoint.y = Screen.height - _inputStartPoint.y;
         }

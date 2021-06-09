@@ -3,6 +3,7 @@ using Assets.Scripts.MapObjects.Castles;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.MapObjects.LiquidParticles;
 using Assets.Scripts.Memory;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -19,7 +20,8 @@ public class CastleSpawnerSc : MonoBehaviour
 
 	GameObject _widthLabel;
 	TheGameSc _gameScript;
-	GameObject[] _castles;
+    List<GameObject> _castles;
+ 
 
 
     private Dictionary<CastleType, GameObject> _typesDict = new Dictionary<CastleType, GameObject>();
@@ -33,6 +35,7 @@ public class CastleSpawnerSc : MonoBehaviour
         if (castlesPrefaps.Length != castlesSizes.Length)
             throw new Exception("You should provide all castles and their sizes!");
 
+        
 
         for (var i = 0; i < castlesPrefaps.Length; i++)
         {
@@ -44,14 +47,15 @@ public class CastleSpawnerSc : MonoBehaviour
 
         //_map = GameObject.Find("Map").GetComponent<MapSc>();
 
-		_castles = new GameObject[castlesCount];
+        _castles = new List<GameObject>();
 		var theGame = GameObject.Find("TheGame");
 		_gameScript = theGame.GetComponent<TheGameSc>();
 
 		GenerateCitiesPositions();
 		AssignCitiesToPlayers();
-
-		InitPlayers();
+        //InitPlayers();
+        TurnCastlesColliders(false);
+        
 	}
 
 	private void InitPlayers()
@@ -67,9 +71,6 @@ public class CastleSpawnerSc : MonoBehaviour
 	{
 		SettingsSc.Stored.CastleInfos.Clear();
 
-        
-
-
 		var gaiaPlayer = _gameScript.GetGaia();
 		for (int i = 0; i < castlesCount; i++)
         {
@@ -81,19 +82,19 @@ public class CastleSpawnerSc : MonoBehaviour
             if (!GetFreePoint(population * OverallSizeScale * 1.5f, out Vector3 pt))
 				continue;
 
-			_castles[i] = Instantiate(_typesDict[castleType], pt, Quaternion.Euler(new Vector3(0, 0, 0)));
+            var newCastle = Instantiate(_typesDict[castleType], pt, Quaternion.Euler(new Vector3(0, 0, 0)));
+            newCastle.transform.localScale = new Vector3(population * OverallSizeScale, population * OverallSizeScale, 0);
 
-
-
-			_castles[i].transform.localScale = new Vector3(population * OverallSizeScale, population * OverallSizeScale, 0);
-
-			var castleScript = _castles[i].GetComponent<CastleSc>();
+			var castleScript = newCastle.GetComponent<CastleSc>();
 			castleScript.CastleType = castleType;
 			castleScript.SetBaseOwner(gaiaPlayer);
 			castleScript.SetBasePopulation(population * 20);
 			castleScript.UpdateTransformInfo(castleScript.transform);
+            castleScript.CastleNumber = i;
 
 			SettingsSc.Stored.CastleInfos.Add(castleScript.GetInfo());
+
+            _castles.Add(newCastle);
 		}
 	}
 
@@ -116,10 +117,10 @@ public class CastleSpawnerSc : MonoBehaviour
         return CastleType.Village1;
     }
 
-	private void AssignCitiesToPlayers()
+	void AssignCitiesToPlayers()
 	{
 		var nonGaiaPlayers = _gameScript.GetNonGaiaPlayers();
-        if (_castles.Length < nonGaiaPlayers.Length)
+        if (_castles.Count < nonGaiaPlayers.Length)
             return;
         for (int i = 0; i < nonGaiaPlayers.Length; i++)
         {
@@ -135,7 +136,15 @@ public class CastleSpawnerSc : MonoBehaviour
         //}
 	}
 
-	private bool GetFreePoint(float citySize, out Vector3 resultPt)
+    void TurnCastlesColliders(bool state)
+    {
+        foreach (var castle in _castles)
+        {
+            castle.GetComponent<BoxCollider2D>().enabled = state;
+        }
+    }
+
+	bool GetFreePoint(float citySize, out Vector3 resultPt)
 	{
 		int maxAttemptCount = 100;
 		resultPt = new Vector3(1, 1, 0);
@@ -155,26 +164,24 @@ public class CastleSpawnerSc : MonoBehaviour
 		}
 		return false;
 	}
-
-
+    
 	bool CanPlaceHere(Vector3 pt, float size)
 	{
-		for (int i = 0; i < castlesCount; i++)
-		{
-			var curCastle = _castles[i];
-			if (curCastle == null)
-				continue;
+        foreach (var castle in _castles)
+        {
+            if (castle == null)
+                continue;
 
-			var curCastleCollider = curCastle.GetComponent<BoxCollider2D>();
-			Bounds newBounds = new Bounds(pt, new Vector3(size, size, 0));
-			if (curCastleCollider.bounds.Intersects(newBounds))
-			{
-				return false;
-			}
-		}
+            var curCastleCollider = castle.GetComponent<BoxCollider2D>();
+            Bounds newBounds = new Bounds(pt, new Vector3(size, size, 0));
+            if (curCastleCollider.bounds.Intersects(newBounds))
+            {
+                return false;
+            }
+        }
+
 		return true;
-
-	}
+    }
 
 	// Update is called once per frame
 	void Update()
