@@ -9,6 +9,7 @@ TagManager:
   - AiButton
   - ColorButton
   - Armies
+  - Lakes
   layers:
   - Default
   - TransparentFX

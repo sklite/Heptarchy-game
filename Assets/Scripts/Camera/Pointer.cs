@@ -48,7 +48,9 @@ public class Pointer : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            _particleSpawner.CreateLiquidParticle(Camera.main.ScreenToWorldPoint(Input.mousePosition), -1);
+            //_particleSpawner.CreateLiquidParticle(Camera.main.ScreenToWorldPoint(Input.mousePosition), -1);
+
+            _particleSpawner.CheckPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 
             _inputStartPoint = Input.mousePosition;
             _inputStartPoint.y = Screen.height - _inputStartPoint.y;

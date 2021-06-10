@@ -9,5 +9,6 @@ namespace Assets.Scripts.Helpers
     public static class GameTags
     {
         public const string Castles = "Castles";
+        public const string Lakes = "Lakes";
     }
 }
