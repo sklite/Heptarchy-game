@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Helpers;
 using UnityEngine;
-using UnityEngine.Rendering.UI;
+using UnityEngine.Analytics;
 using UnityEngine.U2D;
 
 public class LakeSc : MonoBehaviour
@@ -12,6 +11,7 @@ public class LakeSc : MonoBehaviour
 
     private Spline _spline;
     private SpriteShapeController _shapeController;
+  //  private List<EdgeCollider2D> _otherLakes;
     private List<PolygonCollider2D> _otherLakes;
     private List<int> _activePoints;
 
@@ -31,11 +31,6 @@ public class LakeSc : MonoBehaviour
         
     }
 
-    void SetColor(Color newColor)
-    {
-        _shapeController.spriteShapeRenderer.color = new Color(newColor.r, newColor.g, newColor.b, Alpha/ 255.0f);
-    }
-
     bool PointInsideOtherLakes(Vector2 point, List<PolygonCollider2D> otherLakes)
     {
         foreach (var polygonCollider2D in otherLakes)
@@ -48,11 +43,19 @@ public class LakeSc : MonoBehaviour
         return false;
     }
 
+    public void SetColor(Color newColor)
+    {
+        if (_shapeController == null)
+            return;
+        _shapeController.spriteShapeRenderer.color = new Color(newColor.r, newColor.g, newColor.b, Alpha / 255.0f);
+    }
+
     public bool PointInsideCollider(Vector2 point)
     {
         var otherLakes = GameObject.FindGameObjectsWithTag(GameTags.Lakes)
             .Where(go => go != gameObject)
             .Select(go => go.GetComponent<PolygonCollider2D>())
+            //.Select(go => go.GetComponent<EdgeCollider2D>())
             .ToList();
 
         return PointInsideOtherLakes(point, otherLakes);
@@ -67,6 +70,7 @@ public class LakeSc : MonoBehaviour
         _otherLakes = GameObject.FindGameObjectsWithTag(GameTags.Lakes)
             .Where(go => go != gameObject)
             .Select(go => go.GetComponent<PolygonCollider2D>())
+           // .Select(go => go.GetComponent<EdgeCollider2D>())
             .ToList();
 
         var castle = GetComponentInParent<CastleSc>();

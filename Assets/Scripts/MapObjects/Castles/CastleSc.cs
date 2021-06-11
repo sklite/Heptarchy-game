@@ -118,6 +118,9 @@ public class CastleSc : MonoBehaviour
         _circleSprite.color = _info.CastleColor;
         if (_castleColorSprite != null)
             _castleColorSprite.color = _info.CastleColor;
+
+        var castleRegion = GetComponentInChildren<LakeSc>();
+        castleRegion.SetColor(col);
     }
 
     public void SetBaseOwner(BasePlayer owner)
@@ -212,7 +215,9 @@ public class CastleSc : MonoBehaviour
     internal void SetBasePopulation(float p)
     {
         _info.BasePopulation = p;
-        CurrentPopulation = _info.BasePopulation;
+        CurrentPopulation = _currentOwner.IsGaia
+            ? _info.BasePopulation / 20
+            :_info.BasePopulation;
         UpdateGrowthRate();
 
     }
@@ -221,10 +226,9 @@ public class CastleSc : MonoBehaviour
     {
         if (_currentOwner == null)
             return;
-        if (_currentOwner.IsGaia)
-            _info.growthRate = _info.BasePopulation / 8000;
-        else
-            _info.growthRate = _info.BasePopulation / 2000;
+        _info.growthRate = _currentOwner.IsGaia 
+            ? _info.BasePopulation / 8000 
+            : _info.BasePopulation / 2000;
     }
 
     internal void UpdateTransformInfo(Transform transform)

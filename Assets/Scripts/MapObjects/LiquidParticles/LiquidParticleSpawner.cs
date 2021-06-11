@@ -1,48 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Assets.Scripts.Helpers;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.MapObjects.LiquidParticles
 {
     public class LiquidParticleSpawner : MonoBehaviour
     {
         public GameObject LiquidParticlePrefab;
+        public int FloodLength;
 
         private GameObject _particlesFolder;
         //private GameObject[] _castles;
         private List<LakeSc> _lakes;
+        private Stopwatch sw = new Stopwatch();
+        public bool IsFilling = true;
+        
 
-        public int FloodLength;
-
+        
         // Start is called before the first frame update
         void Start()
         {
+            sw.Start();
             _particlesFolder = GameObject.Find("LiquidParticles");
             _lakes = GameObject.FindGameObjectsWithTag(GameTags.Lakes)
                 .Select(go => go.GetComponent<LakeSc>())
                 .ToList();
             //FillCastlesWithFluids();
             FillCastlesLakes();
+
         }
 
         // Update is called once per frame
         void Update()
         {
             if (FloodLength <= 0)
-                return;
-
-            foreach (var lake in _lakes)
             {
-                if (lake != null)
+                if (IsFilling)
                 {
-                    lake.UpdateExpanding();
+                    IsFilling = false;
+
+                   // _lakes
+
+                    sw.Stop();
+                    print($"Elapsed seconds: {sw.Elapsed.Seconds}");
+
+
+
                 }
+
+                return;
             }
+
+            _lakes.ForEach(lake => lake.UpdateExpanding());
 
             FloodLength--;
         }

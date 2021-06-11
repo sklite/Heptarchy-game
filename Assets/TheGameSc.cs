@@ -72,7 +72,7 @@ public class TheGameSc : MonoBehaviour
     {
 
         _counter++;
-        if (_counter % 30 != 0)
+        if (_counter % 50 != 0)
         {
 
             if (_counter == int.MaxValue)
@@ -84,7 +84,7 @@ public class TheGameSc : MonoBehaviour
         {
             if (player is HumanPlayer)
                 continue;
-            //player.MakeMove();
+            player.MakeMove();
 
             if (player.ControlledCities.Count == _gameMap.GetAllCities().Length)
             {

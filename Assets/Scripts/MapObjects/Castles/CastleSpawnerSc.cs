@@ -53,8 +53,8 @@ public class CastleSpawnerSc : MonoBehaviour
 
 		GenerateCitiesPositions();
 		AssignCitiesToPlayers();
-        //InitPlayers();
-        TurnCastlesColliders(false);
+        InitPlayers();
+        //TurnCastlesColliders(false);
         
 	}
 
