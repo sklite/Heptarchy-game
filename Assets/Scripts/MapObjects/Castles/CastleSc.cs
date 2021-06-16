@@ -18,6 +18,11 @@ public class CastleSc : MonoBehaviour
     SpriteRenderer _circleSprite, _castleColorSprite;
     GameObject _mapCastles;
 
+    public CastleSc()
+    {
+        Border = new List<(Vector3, Vector3)>();
+    }
+
     void Awake()
     {
         var spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
@@ -29,6 +34,7 @@ public class CastleSc : MonoBehaviour
 
     void Start()
     {
+
         _mapCastles = GameObject.Find("Castles");
         InitText();
         _info.selected = false;
@@ -57,22 +63,17 @@ public class CastleSc : MonoBehaviour
     public void InitText()
     {
         _populationText = GetComponentInChildren<TextMeshPro>();
-        //var widthBy2 = SettingsSc.ScreenWidth / 2;
-        //var heightBy2 = SettingsSc.ScreenHeight / 2;
+    }
 
-        //   float x = (widthBy2 + transform.position.x) / (SettingsSc.ScreenWidth);
-        //    float y = (heightBy2 + transform.position.y) / (SettingsSc.ScreenHeight);
-
-        //   y -= 0.0003f;
-        //   y -= 0.05f;
-
-        //_label.transform.SetParent(_mapCastles.transform);
-        //_label.transform.position = new Vector3(Mathf.Abs(x), Mathf.Abs(y), 0.0f);
-        //_populationText = _label.GetComponent<UnityEngine.UI.Text>();
-        //_populationText.text = _info.BasePopulation.ToString();
-        //populationText = TextAnchor.UpperCenter;
-
-        //label.transform.parent = mapCastles.transform;
+    void OnDrawGizmos()
+    {
+        Gizmos.color = GetOwner().GetPlayerColor();
+        //  Gizmos.DrawLine(new Vector3(1, 1), new Vector3(2, 2));
+        
+        foreach (var line in Border)
+        {
+            Gizmos.DrawLine(line.Item1, line.Item2);
+        }
     }
 
 
@@ -239,5 +240,11 @@ public class CastleSc : MonoBehaviour
     public CastleInfo GetInfo()
     {
         return _info;
+    }
+
+    public List<(Vector3, Vector3)> Border
+    {
+        get;
+        set;
     }
 }

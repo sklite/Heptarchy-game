@@ -72,7 +72,7 @@ public class TheGameSc : MonoBehaviour
     {
 
         _counter++;
-        if (_counter % 50 != 0)
+        if (_counter % 180 != 0)
         {
 
             if (_counter == int.MaxValue)

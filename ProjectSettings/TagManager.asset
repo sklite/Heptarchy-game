@@ -10,6 +10,7 @@ TagManager:
   - ColorButton
   - Armies
   - Lakes
+  - VoronoiGraph
   layers:
   - Default
   - TransparentFX
