@@ -1,10 +1,14 @@
-﻿using Assets.Scripts.MapObjects.Castles;
+﻿using System;
+using Assets.Scripts.MapObjects.Castles;
 using Assets.Scripts.Players;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
+using Assets.Scripts.MapObjects.Voronoi;
 using TMPro;
 using UnityEngine;
+using UnityEngine.U2D;
 
 public class CastleSc : MonoBehaviour
 {
@@ -17,6 +21,8 @@ public class CastleSc : MonoBehaviour
     Gradient _gradient;
     SpriteRenderer _circleSprite, _castleColorSprite;
     GameObject _mapCastles;
+
+    private const string RegionObjName = "VoronoiLake";
 
     public CastleSc()
     {
@@ -81,7 +87,12 @@ public class CastleSc : MonoBehaviour
     {
 
         if (SettingsSc.IsPaused)
+        {
+            BuildBorders();
             return;
+        }
+
+       
 
         if (CurrentPopulation < _info.BasePopulation)
             CurrentPopulation += _info.growthRate;
@@ -132,8 +143,7 @@ public class CastleSc : MonoBehaviour
 
     public void SetOwner(BasePlayer newOwner)
     {
-        if (_currentOwner != null)
-            _currentOwner.LostCity(gameObject);
+        _currentOwner?.LostCity(gameObject);
         _currentOwner = newOwner;
         UpdateGrowthRate();
         _currentOwner.ControlledCities.Add(gameObject);
@@ -144,6 +154,58 @@ public class CastleSc : MonoBehaviour
     public BasePlayer GetOwner()
     {
         return _currentOwner;
+    }
+
+    private List<VorBorder> _vorShape;
+
+    public void BuildBorders()
+    {
+        if (Border?.Any() != true)
+            return;
+
+        var points = Border.Select(line => line.Item1).ToList();
+        points.AddRange(Border.Select(line => line.Item2));
+
+
+        var builder = new VoronoiBorderBuilder();
+        _vorShape = builder.BuildClosedShape(Border);
+
+       // var borderPoints = Border.SelectMany()
+
+
+        var voronoiLake = gameObject.transform.Find(RegionObjName);
+        var spriteShapeController = voronoiLake.GetComponent<SpriteShapeController>();
+        var spline = spriteShapeController.spline;
+        spline.Clear();
+
+        
+        for (int i = 0; i < _vorShape.Count; i++)
+        {
+            var currPoint = _vorShape[i].Line.Item1;
+            var localCoord = transform.InverseTransformPoint(currPoint);
+         //   var pointInGlobalCoordinates = transform.TransformPoint(currPoint);
+
+            spline.InsertPointAt(i, localCoord);
+        }
+
+        try
+        {
+            var localCoord = transform.InverseTransformPoint(_vorShape.Last().Line.Item2);
+            spline.InsertPointAt(_vorShape.Count, localCoord);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
+
+
+
+
+   //     spline.InsertPointAt();
+        
+
     }
 
 
@@ -171,13 +233,7 @@ public class CastleSc : MonoBehaviour
     //    set { _info.Type = value; }
     //}
 
-    public bool IsSelected
-    {
-        get
-        {
-            return _info.selected;
-        }
-    }
+    public bool IsSelected => _info.selected;
 
 
     internal void Visit(ArmySc armyScript)
@@ -242,9 +298,5 @@ public class CastleSc : MonoBehaviour
         return _info;
     }
 
-    public List<(Vector3, Vector3)> Border
-    {
-        get;
-        set;
-    }
+    public List<(Vector3, Vector3)> Border;
 }

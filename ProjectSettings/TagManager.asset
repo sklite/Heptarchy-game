@@ -11,6 +11,7 @@ TagManager:
   - Armies
   - Lakes
   - VoronoiGraph
+  - VoronoiLake
   layers:
   - Default
   - TransparentFX

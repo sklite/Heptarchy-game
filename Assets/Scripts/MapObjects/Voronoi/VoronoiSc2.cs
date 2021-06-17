@@ -1,11 +1,8 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Helpers;
 using Assets.Scripts.MapObjects.Voronoi;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class VoronoiSc2 : MonoBehaviour
 {
@@ -14,7 +11,6 @@ public class VoronoiSc2 : MonoBehaviour
 
     private int _regionAmount;
     private List<(Vector3, Vector3)> lines = new List<(Vector3, Vector3)>();
-    private Dictionary<int, VorBorder> _borders = new Dictionary<int, VorBorder>();
 
     private Voronoi _voroObject = new Voronoi(0.1f);
     private void Start()
@@ -77,12 +73,15 @@ public class VoronoiSc2 : MonoBehaviour
                 //print($"New line from: {p1} to {p2}");
                 var p1World = Camera.main.ScreenToWorldPoint(p1);
                 var p2World = Camera.main.ScreenToWorldPoint(p2);
-                print($"Or like from: {p1World} to {p2World}");
 
                 castlesSc[ge[i].site1].Border.Add((p1World, p2World));
-                castlesSc[ge[i].site2].Border.Add((p1World, p2World));
-                
+                print($"Castle {castlesSc[ge[i].site1].CastleNumber} has point {p1World} to {p2World}");
 
+                castlesSc[ge[i].site2].Border.Add((p1World, p2World));
+                print($"Castle {castlesSc[ge[i].site2].CastleNumber} has point {p1World} to {p2World}");
+
+                //castlesSc[ge[i].site1].Border.Add((p1World, p1World));
+                //castlesSc[ge[i].site2].Border.Add((p2World, p2World));
                 //foreach (var castle in castles)
                 //{
 
@@ -96,6 +95,11 @@ public class VoronoiSc2 : MonoBehaviour
             {
                 string s = "\nP " + i + ": " + ge[i].x1 + ", " + ge[i].y1 + " || " + ge[i].x2 + ", " + ge[i].y2;
             }
+        }
+
+        foreach (var castle in castlesSc)
+        {
+            castle.BuildBorders();
         }
     }
 
