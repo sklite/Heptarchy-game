@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ArmySpawnerSc : MonoBehaviour
 {
-    float _armySpeed = 0.025f;
+    public float ArmySpeed = 0.025f;
     public GameObject armyPrefab;
     // Use this for initialization
     void Start()
@@ -50,7 +50,7 @@ public class ArmySpawnerSc : MonoBehaviour
         float katetY = Mathf.Abs(source.y - destination.y);
         float hypotenuza = (float)Mathf.Sqrt(katetX * katetX + katetY * katetY);
 
-        float speed = _armySpeed;
+        float speed = ArmySpeed;
         var dx = speed * (katetX / hypotenuza);
         var dy = speed * (katetY / hypotenuza);
 

@@ -24,7 +24,7 @@ namespace Assets.Scripts.Players.Ai
             Vector2 center = FindCenter();
 
 
-            float koeff = 100 - DistanceCalculator.CalcDistance(center.x, city.transform.position.x,
+            float koeff = 100 - MathCalculator.CalcDistance(center.x, city.transform.position.x,
                 center.y, city.transform.position.y);
             //float armies = calcArmiesSumm();
 

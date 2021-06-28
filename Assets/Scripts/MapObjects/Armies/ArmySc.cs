@@ -12,7 +12,7 @@ public class ArmySc : MonoBehaviour
     GameObject _destination;
 
     BasePlayer _owner;
-    new BoxCollider2D _collider;
+    BoxCollider2D _collider;
 
     // Color color;
     SpriteRenderer _sprite;

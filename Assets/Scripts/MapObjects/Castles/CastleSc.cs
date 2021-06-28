@@ -186,25 +186,27 @@ public class CastleSc : MonoBehaviour
          //   var pointInGlobalCoordinates = transform.TransformPoint(currPoint);
 
             spline.InsertPointAt(i, localCoord);
+            spline.SetHeight(i, 0.2f);
         }
 
         try
         {
-            var localCoord = transform.InverseTransformPoint(_vorShape.Last().Line.Item2);
-            spline.InsertPointAt(_vorShape.Count, localCoord);
+            var lastCoord = transform.InverseTransformPoint(_vorShape.Last().Line.Item2);
+            spline.InsertPointAt(_vorShape.Count, lastCoord);
+            spline.SetHeight(_vorShape.Count, 0.2f);
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+      //      print();
+            Debug.LogError($"Exception at {e}");
         }
 
 
 
 
 
-   //     spline.InsertPointAt();
-        
+        //     spline.InsertPointAt();
+
 
     }
 

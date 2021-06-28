@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using Assets.Scripts.Helpers;
 using UnityEngine;
+using Mth = Assets.Scripts.Helpers.MathCalculator;
 
 namespace Assets.Scripts.MapObjects.Voronoi
 {
@@ -14,29 +16,62 @@ namespace Assets.Scripts.MapObjects.Voronoi
 
         public List<VorBorder> BuildClosedShape(List<(Vector3, Vector3)> borders)
         {
-            //  points.Distinct()
             var lines = borders.Where(item => item.Item1 != item.Item2).ToList();
+            var initialBorder = new VorBorder { Line = lines.First() };
 
-            var initialBorder = new VorBorder
-            {
-                Line = lines.First()
-            };
+            AddCornerNodes(lines);
 
             var restLines = new List<(Vector3, Vector3)>(lines);
             restLines.Remove(initialBorder.Line);
 
+            BuildForwardBorders(initialBorder, ref restLines, lines.Count);
+            BuildBackwardBorders(initialBorder, ref restLines, lines.Count);
 
             var curBorder = initialBorder;
-            for (int i = 0; i < lines.Count; i++)
-            {
+            var result = new List<VorBorder>();
 
+            while (curBorder.Previous != null)
+                curBorder = curBorder.Previous;
+            
+
+            result.Add(curBorder);
+            while (curBorder.Next != null)
+            {
+                curBorder = curBorder.Next;
+                result.Add(curBorder);
+            }
+
+            // If region is rounded
+            if (Mth.EqualVectors(result.First().Line.Item1, result.Last().Line.Item2))
+                result.RemoveAt(result.Count - 1);
+
+            return result;
+        }
+
+        (Vector3, Vector3) FindNextLine(Vector3 targetNode, List<(Vector3, Vector3)> lines)
+        {
+            foreach (var line in lines)
+            {
+                if (Mth.EqualVectors(targetNode, line.Item1) || Mth.EqualVectors(targetNode, line.Item2))
+                {
+                    return line;
+                }
+            }
+
+            return (_notFound, _notFound);
+        }
+
+        void BuildForwardBorders(VorBorder curBorder, ref List<(Vector3, Vector3)> restLines, int allLinesCount)
+        {
+            for (int i = 0; i < allLinesCount; i++)
+            {
                 var foundNextLine = FindNextLine(curBorder.Line.Item2, restLines);
                 if (foundNextLine.Item1 == _notFound)
                     break;
 
                 restLines.Remove(foundNextLine);
 
-                if (foundNextLine.Item2 == curBorder.Line.Item2)
+                if (Mth.EqualVectors(foundNextLine.Item2, curBorder.Line.Item2))
                     foundNextLine = (foundNextLine.Item2, foundNextLine.Item1);
 
                 curBorder.Next = new VorBorder
@@ -47,19 +82,18 @@ namespace Assets.Scripts.MapObjects.Voronoi
 
                 curBorder = curBorder.Next;
             }
+        }
 
-            curBorder = initialBorder;
-            //restLines = new List<(Vector3, Vector3)>(lines);
-            //restLines.Remove(initialBorder.Line);
-
-            for (int i = 0; i < lines.Count; i++)
+        void BuildBackwardBorders(VorBorder curBorder, ref List<(Vector3, Vector3)> restLines, int allLinesCount)
+        {
+            for (int i = 0; i < allLinesCount; i++)
             {
                 var foundPreviousLine = FindNextLine(curBorder.Line.Item1, restLines);
                 if (foundPreviousLine.Item1 == _notFound)
                     break;
 
                 restLines.Remove(foundPreviousLine);
-                if (foundPreviousLine.Item1 == curBorder.Line.Item1)
+                if (Mth.EqualVectors(foundPreviousLine.Item1, curBorder.Line.Item1))
                     foundPreviousLine = (foundPreviousLine.Item2, foundPreviousLine.Item1);
 
                 curBorder.Previous = new VorBorder()
@@ -69,73 +103,118 @@ namespace Assets.Scripts.MapObjects.Voronoi
                 };
                 curBorder = curBorder.Previous;
             }
-
-            var result = new List<VorBorder>();
-            while (curBorder.Previous != null)
-            {
-                curBorder = curBorder.Previous;
-            }
-
-            result.Add(curBorder);
-            while (curBorder.Next != null)
-            {
-                curBorder = curBorder.Next;
-                result.Add(curBorder);
-            }
-
-            if (result.First().Line.Item1 == result.Last().Line.Item2)
-                result.RemoveAt(result.Count - 1);
-
-            return result;
         }
 
-
-
-
-        (Vector3, Vector3) FindNextLine(Vector3 targetNode, List<(Vector3, Vector3)> lines)
+        void AddCornerNodes(List<(Vector3, Vector3)> borders)
         {
-            foreach (var line in lines)
+            float? x = null, y = null;
+            (Vector3, Vector3) lastNode = default;
+
+            foreach (var vorBorder in borders)
             {
-                if (targetNode == line.Item1 || targetNode == line.Item2)
+                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item1.x), MapSc.Max.x))
                 {
-                    return line;
+                    x = vorBorder.Item1.x;
+                    lastNode = vorBorder;
+                    continue;
+                }
+
+                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item1.y), MapSc.Max.y))
+                {
+                    y = vorBorder.Item1.y;
+                    lastNode = vorBorder;
+                    continue;
+                }
+
+                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item2.x), MapSc.Max.x))
+                {
+                    x = vorBorder.Item2.x;
+                    lastNode = vorBorder;
+                    continue;
+                }
+
+                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item2.y), MapSc.Max.y))
+                {
+                    y = vorBorder.Item2.y;
+                    lastNode = vorBorder;
+                    continue;
                 }
             }
 
-            return (_notFound, _notFound);
+            if (x == null || y == null)
+                return;
 
+            (Vector3, Vector3) newBorder = default;
+
+            if (Mth.EqualsFloat(lastNode.Item1.x, x.Value) || Mth.EqualsFloat(lastNode.Item1.y, y.Value))
+            {
+                newBorder = (new Vector3(x.Value, y.Value, lastNode.Item1.z), lastNode.Item1);
+            }
+
+            if (Mth.EqualsFloat(lastNode.Item2.x, x.Value) || Mth.EqualsFloat(lastNode.Item2.y, y.Value))
+            {
+                newBorder = (new Vector3(x.Value, y.Value, lastNode.Item2.z), lastNode.Item2);
+            }
+
+            borders.Add(newBorder);
         }
 
-        //bool IsCLosedShape(List<(Vector3, Vector3)> lines)
-        //{
-        //    var connectedLines = new LinkedList<Vector3>();
+        void AddCornerNodes(List<VorBorder> borders)
+        {
+            float? x = null, y = null;
+            VorBorder lastNode = null;
 
-        //    connectedLines.AddFirst(lines.First().Item1);
-        //    connectedLines.AddLast(lines.First().Item2);
+            foreach (var vorBorder in borders)
+            {
+                if (Mth.EqualsFloat(Math.Abs(vorBorder.Line.Item1.x), MapSc.Max.x))
+                {
+                    x = vorBorder.Line.Item1.x;
+                    lastNode = vorBorder;
+                    continue;
+                }
 
-        //    var activeLines = lines.Select(line => (Active: true, line.Item1, line.Item2));
+                if (Mth.EqualsFloat(Math.Abs(vorBorder.Line.Item1.y), MapSc.Max.y))
+                {
+                    y = vorBorder.Line.Item1.y;
+                    lastNode = vorBorder;
+                    continue;
+                }
 
-        //    for (int i = 0; i < lines.Count; i++)
-        //    {
-        //        var lastConnectedPoint = connectedLines.Last;
+                if (Mth.EqualsFloat(Math.Abs(vorBorder.Line.Item2.x), MapSc.Max.x))
+                {
+                    x = vorBorder.Line.Item2.x;
+                    lastNode = vorBorder;
+                    continue;
+                }
 
-        //        foreach (var activeLine in activeLines.Where(line => line.Active))
-        //        {
-                    
-        //        }
+                if (Mth.EqualsFloat(Math.Abs(vorBorder.Line.Item2.y), MapSc.Max.y))
+                {
+                    y = vorBorder.Line.Item2.y;
+                    lastNode = vorBorder;
+                    continue;
+                }
+            }
 
-        //    }
+            if (x == null || y == null)
+                return;
 
-        //    foreach (var line in lines)
-        //    {
-                
-                
+            var newBorder = new VorBorder();
 
+            if (lastNode.Next == null)
+            {
+                newBorder.Line = (new Vector3(x.Value, y.Value), lastNode.Line.Item2);
+                newBorder.Previous = lastNode;
+                lastNode.Next = newBorder;
+            }
 
+            if (lastNode.Previous == null)
+            {
+                newBorder.Line = (new Vector3(x.Value, y.Value), lastNode.Line.Item1);
+                newBorder.Next = lastNode;
+                lastNode.Previous = newBorder;
+            }
 
-        //    }
-        //}
-
-       // (Vector3, Vector)
+            borders.Add(newBorder);
+        }
     }
 }

@@ -20,7 +20,7 @@ namespace Assets.Scripts.Players.Ai
         private float CalculatePriorityToCity(CastleSc city)
         {
 
-            float distance = 500 - DistanceCalculator.CalcDistance(playerCities[0].transform.position.x, city.transform.position.x,
+            float distance = 500 - MathCalculator.CalcDistance(playerCities[0].transform.position.x, city.transform.position.x,
                 playerCities[0].transform.position.y, city.transform.position.y);
 
 

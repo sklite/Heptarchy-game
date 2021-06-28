@@ -51,4 +51,6 @@ Corridor/Library/metadata/
 
 binaries/
 logs/
+Logs/
 *.log
+*.exe0.log

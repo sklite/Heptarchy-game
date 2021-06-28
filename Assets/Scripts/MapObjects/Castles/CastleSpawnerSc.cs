@@ -16,6 +16,7 @@ public class CastleSpawnerSc : MonoBehaviour
 	public float[] castlesFrequences;
 	public float[] castlesSizes;
     public float OverallSizeScale;
+    public float DistanceMultiplier;
 
 
 	GameObject _widthLabel;
@@ -79,11 +80,12 @@ public class CastleSpawnerSc : MonoBehaviour
 
 			float population = populationFactor + Random.value * 0.7f;
 
-            if (!GetFreePoint(population * OverallSizeScale * 1.5f, out Vector3 pt))
+            if (!GetFreePoint(population * OverallSizeScale * DistanceMultiplier, out Vector3 pt))
 				continue;
 
             var newCastle = Instantiate(_typesDict[castleType], pt, Quaternion.Euler(new Vector3(0, 0, 0)));
             newCastle.transform.localScale = new Vector3(population * OverallSizeScale, population * OverallSizeScale, 0);
+            
 
 			var castleScript = newCastle.GetComponent<CastleSc>();
 			castleScript.CastleType = castleType;
@@ -91,8 +93,9 @@ public class CastleSpawnerSc : MonoBehaviour
 			castleScript.SetBasePopulation(population * 20);
 			castleScript.UpdateTransformInfo(castleScript.transform);
             castleScript.CastleNumber = i;
+            newCastle.name = $"{castleType} {castleScript.CastleNumber}";
 
-			SettingsSc.Stored.CastleInfos.Add(castleScript.GetInfo());
+            SettingsSc.Stored.CastleInfos.Add(castleScript.GetInfo());
 
             _castles.Add(newCastle);
 		}
