@@ -13,10 +13,13 @@ namespace Assets.Scripts.MapObjects.Voronoi
     class VoronoiBorderBuilder
     {
         private readonly Vector3 _notFound = new Vector3(-99999, -99999, -99999);
+        private const float MinNodeDistance = 0.8f;
 
         public List<VorBorder> BuildClosedShape(List<(Vector3, Vector3)> borders)
         {
-            var lines = borders.Where(item => item.Item1 != item.Item2).ToList();
+            var lines = borders.Where(item => !Mth.EqualVectors(item.Item1, item.Item2, MinNodeDistance)).ToList();
+
+
             var initialBorder = new VorBorder { Line = lines.First() };
 
             AddCornerNodes(lines);
@@ -52,7 +55,7 @@ namespace Assets.Scripts.MapObjects.Voronoi
         {
             foreach (var line in lines)
             {
-                if (Mth.EqualVectors(targetNode, line.Item1) || Mth.EqualVectors(targetNode, line.Item2))
+                if (Mth.EqualVectors(targetNode, line.Item1, MinNodeDistance) || Mth.EqualVectors(targetNode, line.Item2, MinNodeDistance))
                 {
                     return line;
                 }
@@ -71,7 +74,7 @@ namespace Assets.Scripts.MapObjects.Voronoi
 
                 restLines.Remove(foundNextLine);
 
-                if (Mth.EqualVectors(foundNextLine.Item2, curBorder.Line.Item2))
+                if (Mth.EqualVectors(foundNextLine.Item2, curBorder.Line.Item2, MinNodeDistance))
                     foundNextLine = (foundNextLine.Item2, foundNextLine.Item1);
 
                 curBorder.Next = new VorBorder
@@ -93,7 +96,7 @@ namespace Assets.Scripts.MapObjects.Voronoi
                     break;
 
                 restLines.Remove(foundPreviousLine);
-                if (Mth.EqualVectors(foundPreviousLine.Item1, curBorder.Line.Item1))
+                if (Mth.EqualVectors(foundPreviousLine.Item1, curBorder.Line.Item1, MinNodeDistance))
                     foundPreviousLine = (foundPreviousLine.Item2, foundPreviousLine.Item1);
 
                 curBorder.Previous = new VorBorder()
@@ -105,7 +108,7 @@ namespace Assets.Scripts.MapObjects.Voronoi
             }
         }
 
-        void AddCornerNodes(List<(Vector3, Vector3)> borders)
+        void AddBorderNodes(List<(Vector3, Vector3)> borders)
         {
             float? x = null, y = null;
             (Vector3, Vector3) lastNode = default;
@@ -152,6 +155,60 @@ namespace Assets.Scripts.MapObjects.Voronoi
             }
 
             if (Mth.EqualsFloat(lastNode.Item2.x, x.Value) || Mth.EqualsFloat(lastNode.Item2.y, y.Value))
+            {
+                newBorder = (new Vector3(x.Value, y.Value, lastNode.Item2.z), lastNode.Item2);
+            }
+
+            borders.Add(newBorder);
+        }
+
+        void AddCornerNodes(List<(Vector3, Vector3)> borders)
+        {
+            float? x = null, y = null;
+            (Vector3, Vector3) lastNode = default;
+
+            foreach (var vorBorder in borders)
+            {
+                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item1.x), MapSc.Max.x, MinNodeDistance))
+                {
+                    x = vorBorder.Item1.x;
+                    lastNode = vorBorder;
+                    continue;
+                }
+
+                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item1.y), MapSc.Max.y, MinNodeDistance))
+                {
+                    y = vorBorder.Item1.y;
+                    lastNode = vorBorder;
+                    continue;
+                }
+
+                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item2.x), MapSc.Max.x, MinNodeDistance))
+                {
+                    x = vorBorder.Item2.x;
+                    lastNode = vorBorder;
+                    continue;
+                }
+
+                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item2.y), MapSc.Max.y, MinNodeDistance))
+                {
+                    y = vorBorder.Item2.y;
+                    lastNode = vorBorder;
+                    continue;
+                }
+            }
+
+            if (x == null || y == null)
+                return;
+
+            (Vector3, Vector3) newBorder = default;
+
+            if (Mth.EqualsFloat(lastNode.Item1.x, x.Value, MinNodeDistance) || Mth.EqualsFloat(lastNode.Item1.y, y.Value, MinNodeDistance))
+            {
+                newBorder = (new Vector3(x.Value, y.Value, lastNode.Item1.z), lastNode.Item1);
+            }
+
+            if (Mth.EqualsFloat(lastNode.Item2.x, x.Value, MinNodeDistance) || Mth.EqualsFloat(lastNode.Item2.y, y.Value, MinNodeDistance))
             {
                 newBorder = (new Vector3(x.Value, y.Value, lastNode.Item2.z), lastNode.Item2);
             }

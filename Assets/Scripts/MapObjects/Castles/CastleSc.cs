@@ -5,12 +5,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
+using Assets.Scripts.Interfaces;
 using Assets.Scripts.MapObjects.Voronoi;
 using TMPro;
 using UnityEngine;
 using UnityEngine.U2D;
 
-public class CastleSc : MonoBehaviour
+public class CastleSc : MonoBehaviour, IHaveOwner
 {
     public CastleType CastleType;
     public int CastleNumber;
@@ -22,11 +23,16 @@ public class CastleSc : MonoBehaviour
     SpriteRenderer _circleSprite, _castleColorSprite;
     GameObject _mapCastles;
 
-    private const string RegionObjName = "VoronoiLake";
+    VoronoiLakeSc _voronoiLake;
+    VoronoiLakeSc VoronoiLake
+    {
+        get { _voronoiLake ??= gameObject.transform.Find("VoronoiLake").gameObject.GetComponent<VoronoiLakeSc>(); return _voronoiLake; }
+    }
+
 
     public CastleSc()
     {
-        Border = new List<(Vector3, Vector3)>();
+        //Border = new List<(Vector3, Vector3)>();
     }
 
     void Awake()
@@ -40,7 +46,6 @@ public class CastleSc : MonoBehaviour
 
     void Start()
     {
-
         _mapCastles = GameObject.Find("Castles");
         InitText();
         _info.selected = false;
@@ -71,16 +76,7 @@ public class CastleSc : MonoBehaviour
         _populationText = GetComponentInChildren<TextMeshPro>();
     }
 
-    void OnDrawGizmos()
-    {
-        Gizmos.color = GetOwner().GetPlayerColor();
-        //  Gizmos.DrawLine(new Vector3(1, 1), new Vector3(2, 2));
-        
-        foreach (var line in Border)
-        {
-            Gizmos.DrawLine(line.Item1, line.Item2);
-        }
-    }
+
 
 
     void Update()
@@ -101,7 +97,7 @@ public class CastleSc : MonoBehaviour
         {
             var timeFraction = Time.realtimeSinceStartup - (int)Time.realtimeSinceStartup;
             _info.CurrentColor = _gradient.Evaluate(timeFraction);
-            _circleSprite.color = _info.CurrentColor;
+            //_circleSprite.color = _info.CurrentColor;
             if (_castleColorSprite != null)
                 _castleColorSprite.color = _info.CurrentColor;
         }
@@ -117,22 +113,23 @@ public class CastleSc : MonoBehaviour
     {
         _info.selected = false;
         _currentOwner.DeselectCity(gameObject);
-        _circleSprite.color = _info.CastleColor;
+        //_circleSprite.color = _info.CastleColor;
         if (_castleColorSprite != null)
             _castleColorSprite.color = _info.CurrentColor;
     }
 
-    void SetColor(Color col)
+    public void SetColor(Color col)
     {
         _info.CastleColor = col;
         _info.CurrentColor = _info.CastleColor;
 
-        _circleSprite.color = _info.CastleColor;
+       // _circleSprite.color = _info.CastleColor;
         if (_castleColorSprite != null)
             _castleColorSprite.color = _info.CastleColor;
 
-        var castleRegion = GetComponentInChildren<LakeSc>();
-        castleRegion.SetColor(col);
+        //VoronoiLake.SetColor(col);
+        //var castleRegion = GetComponentInChildren<LakeSc>();
+        //castleRegion?.SetColor(col);
     }
 
     public void SetBaseOwner(BasePlayer owner)
@@ -143,6 +140,7 @@ public class CastleSc : MonoBehaviour
 
     public void SetOwner(BasePlayer newOwner)
     {
+        VoronoiLake.SetOwner(newOwner);
         _currentOwner?.LostCity(gameObject);
         _currentOwner = newOwner;
         UpdateGrowthRate();
@@ -156,60 +154,15 @@ public class CastleSc : MonoBehaviour
         return _currentOwner;
     }
 
-    private List<VorBorder> _vorShape;
-
     public void BuildBorders()
     {
-        if (Border?.Any() != true)
-            return;
-
-        var points = Border.Select(line => line.Item1).ToList();
-        points.AddRange(Border.Select(line => line.Item2));
-
-
-        var builder = new VoronoiBorderBuilder();
-        _vorShape = builder.BuildClosedShape(Border);
-
-       // var borderPoints = Border.SelectMany()
-
-
-        var voronoiLake = gameObject.transform.Find(RegionObjName);
-        var spriteShapeController = voronoiLake.GetComponent<SpriteShapeController>();
-        var spline = spriteShapeController.spline;
-        spline.Clear();
-
-        
-        for (int i = 0; i < _vorShape.Count; i++)
-        {
-            var currPoint = _vorShape[i].Line.Item1;
-            var localCoord = transform.InverseTransformPoint(currPoint);
-         //   var pointInGlobalCoordinates = transform.TransformPoint(currPoint);
-
-            spline.InsertPointAt(i, localCoord);
-            spline.SetHeight(i, 0.2f);
-        }
-
-        try
-        {
-            var lastCoord = transform.InverseTransformPoint(_vorShape.Last().Line.Item2);
-            spline.InsertPointAt(_vorShape.Count, lastCoord);
-            spline.SetHeight(_vorShape.Count, 0.2f);
-        }
-        catch (Exception e)
-        {
-      //      print();
-            Debug.LogError($"Exception at {e}");
-        }
-
-
-
-
-
-        //     spline.InsertPointAt();
-
-
+        VoronoiLake.BuildBorders();
     }
 
+    public void AddBorderLine((Vector3, Vector3) border)
+    {
+        VoronoiLake.Border.Add(border);
+    }
 
     public float CurrentPopulation
     {
@@ -299,6 +252,4 @@ public class CastleSc : MonoBehaviour
     {
         return _info;
     }
-
-    public List<(Vector3, Vector3)> Border;
 }

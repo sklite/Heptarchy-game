@@ -11,7 +11,6 @@ public class LakeSc : MonoBehaviour
 
     private Spline _spline;
     private SpriteShapeController _shapeController;
-  //  private List<EdgeCollider2D> _otherLakes;
     private List<PolygonCollider2D> _otherLakes;
     private List<int> _activePoints;
 
@@ -99,23 +98,5 @@ public class LakeSc : MonoBehaviour
         }
 
         _activePoints.RemoveAll(pt => pointsToRemove.Contains(pt));
-
-        //for (int i = 0; i < _spline.GetPointCount(); i++)
-        //{
-        //    var oldPosition = _spline.GetPosition(i);
-
-        //    var pointInGlobalCoordinates = transform.TransformPoint(oldPosition);
-        //    if (PointInsideOtherLakes(pointInGlobalCoordinates, _otherLakes))
-        //    {
-        //        _stoppedPoints.Add(i);
-        //        continue;
-        //    }
-
-        //    var change = oldPosition * FloodSpeed;
-        //    _spline.SetPosition(i, oldPosition + change);
-        //}
-
-        //_shapeController.BakeCollider();
-        //_shapeController.RefreshSpriteShape();
     }
 }
