@@ -1,15 +1,9 @@
-﻿using System;
-using Assets.Scripts.MapObjects.Castles;
+﻿using Assets.Scripts.MapObjects.Castles;
 using Assets.Scripts.Players;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
 using Assets.Scripts.Interfaces;
-using Assets.Scripts.MapObjects.Voronoi;
 using TMPro;
 using UnityEngine;
-using UnityEngine.U2D;
 
 public class CastleSc : MonoBehaviour, IHaveOwner
 {
@@ -27,6 +21,12 @@ public class CastleSc : MonoBehaviour, IHaveOwner
     VoronoiLakeSc VoronoiLake
     {
         get { _voronoiLake ??= gameObject.transform.Find("VoronoiLake").gameObject.GetComponent<VoronoiLakeSc>(); return _voronoiLake; }
+    }
+
+    CastleBorderBuilderSc _castleBorderBuilder;
+    CastleBorderBuilderSc CastleBorders
+    {
+        get { _castleBorderBuilder ??= gameObject.GetComponentInChildren<CastleBorderBuilderSc>(); return _castleBorderBuilder; }
     }
 
 
@@ -157,10 +157,12 @@ public class CastleSc : MonoBehaviour, IHaveOwner
     public void BuildBorders()
     {
         VoronoiLake.BuildBorders();
+       // CastleBorderBuilder
     }
 
     public void AddBorderLine((Vector3, Vector3) border)
     {
+        CastleBorders.AddBorderLine(border, gameObject);
         VoronoiLake.Border.Add(border);
     }
 

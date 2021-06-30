@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using Assets.Scripts.Helpers;
+using Assets.Scripts.MapObjects.Voronoi;
 using UnityEngine;
 using Mth = Assets.Scripts.Helpers.MathCalculator;
 
-namespace Assets.Scripts.MapObjects.Voronoi
+namespace Assets.Scripts.MapObjects.Castles.Borders
 {
     class VoronoiBorderBuilder
     {
@@ -107,61 +104,7 @@ namespace Assets.Scripts.MapObjects.Voronoi
                 curBorder = curBorder.Previous;
             }
         }
-
-        void AddBorderNodes(List<(Vector3, Vector3)> borders)
-        {
-            float? x = null, y = null;
-            (Vector3, Vector3) lastNode = default;
-
-            foreach (var vorBorder in borders)
-            {
-                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item1.x), MapSc.Max.x))
-                {
-                    x = vorBorder.Item1.x;
-                    lastNode = vorBorder;
-                    continue;
-                }
-
-                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item1.y), MapSc.Max.y))
-                {
-                    y = vorBorder.Item1.y;
-                    lastNode = vorBorder;
-                    continue;
-                }
-
-                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item2.x), MapSc.Max.x))
-                {
-                    x = vorBorder.Item2.x;
-                    lastNode = vorBorder;
-                    continue;
-                }
-
-                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item2.y), MapSc.Max.y))
-                {
-                    y = vorBorder.Item2.y;
-                    lastNode = vorBorder;
-                    continue;
-                }
-            }
-
-            if (x == null || y == null)
-                return;
-
-            (Vector3, Vector3) newBorder = default;
-
-            if (Mth.EqualsFloat(lastNode.Item1.x, x.Value) || Mth.EqualsFloat(lastNode.Item1.y, y.Value))
-            {
-                newBorder = (new Vector3(x.Value, y.Value, lastNode.Item1.z), lastNode.Item1);
-            }
-
-            if (Mth.EqualsFloat(lastNode.Item2.x, x.Value) || Mth.EqualsFloat(lastNode.Item2.y, y.Value))
-            {
-                newBorder = (new Vector3(x.Value, y.Value, lastNode.Item2.z), lastNode.Item2);
-            }
-
-            borders.Add(newBorder);
-        }
-
+        
         void AddCornerNodes(List<(Vector3, Vector3)> borders)
         {
             float? x = null, y = null;
@@ -211,64 +154,6 @@ namespace Assets.Scripts.MapObjects.Voronoi
             if (Mth.EqualsFloat(lastNode.Item2.x, x.Value, MinNodeDistance) || Mth.EqualsFloat(lastNode.Item2.y, y.Value, MinNodeDistance))
             {
                 newBorder = (new Vector3(x.Value, y.Value, lastNode.Item2.z), lastNode.Item2);
-            }
-
-            borders.Add(newBorder);
-        }
-
-        void AddCornerNodes(List<VorBorder> borders)
-        {
-            float? x = null, y = null;
-            VorBorder lastNode = null;
-
-            foreach (var vorBorder in borders)
-            {
-                if (Mth.EqualsFloat(Math.Abs(vorBorder.Line.Item1.x), MapSc.Max.x))
-                {
-                    x = vorBorder.Line.Item1.x;
-                    lastNode = vorBorder;
-                    continue;
-                }
-
-                if (Mth.EqualsFloat(Math.Abs(vorBorder.Line.Item1.y), MapSc.Max.y))
-                {
-                    y = vorBorder.Line.Item1.y;
-                    lastNode = vorBorder;
-                    continue;
-                }
-
-                if (Mth.EqualsFloat(Math.Abs(vorBorder.Line.Item2.x), MapSc.Max.x))
-                {
-                    x = vorBorder.Line.Item2.x;
-                    lastNode = vorBorder;
-                    continue;
-                }
-
-                if (Mth.EqualsFloat(Math.Abs(vorBorder.Line.Item2.y), MapSc.Max.y))
-                {
-                    y = vorBorder.Line.Item2.y;
-                    lastNode = vorBorder;
-                    continue;
-                }
-            }
-
-            if (x == null || y == null)
-                return;
-
-            var newBorder = new VorBorder();
-
-            if (lastNode.Next == null)
-            {
-                newBorder.Line = (new Vector3(x.Value, y.Value), lastNode.Line.Item2);
-                newBorder.Previous = lastNode;
-                lastNode.Next = newBorder;
-            }
-
-            if (lastNode.Previous == null)
-            {
-                newBorder.Line = (new Vector3(x.Value, y.Value), lastNode.Line.Item1);
-                newBorder.Next = lastNode;
-                lastNode.Previous = newBorder;
             }
 
             borders.Add(newBorder);

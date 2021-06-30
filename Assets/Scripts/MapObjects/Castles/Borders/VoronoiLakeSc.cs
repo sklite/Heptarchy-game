@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Interfaces;
+using Assets.Scripts.MapObjects.Castles.Borders;
 using Assets.Scripts.MapObjects.Voronoi;
 using Assets.Scripts.Players;
 using UnityEngine;
@@ -68,12 +69,8 @@ public class VoronoiLakeSc : MonoBehaviour, IHaveOwner
         var points = Border.Select(line => line.Item1).ToList();
         points.AddRange(Border.Select(line => line.Item2));
 
-
         var builder = new VoronoiBorderBuilder();
         _vorShape = builder.BuildClosedShape(Border);
-
-        // var borderPoints = Border.SelectMany()
-
         
         var spline = ShapeController.spline;
         spline.Clear();
