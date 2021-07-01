@@ -426,7 +426,7 @@ GameObject:
   - component: {fileID: 3357713849128377048}
   m_Layer: 9
   m_Name: InteractiveBorders
-  m_TagString: Untagged
+  m_TagString: VoronoiLake
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -593,7 +593,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprites.Array.data[0]
       value: 
-      objectReference: {fileID: 21300000, guid: ce0353102083d1844927faaf3715b5f4,
+      objectReference: {fileID: 21300000, guid: 262b7386ede5b3d4d92a64b20af33173,
         type: 3}
     - target: {fileID: -5659977325313363827, guid: 184f6289204071748800fc031d6b22f1,
         type: 3}

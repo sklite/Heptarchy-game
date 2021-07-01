@@ -23,8 +23,6 @@ public class CastleSpawnerSc : MonoBehaviour
 	TheGameSc _gameScript;
     List<GameObject> _castles;
  
-
-
     private Dictionary<CastleType, GameObject> _typesDict = new Dictionary<CastleType, GameObject>();
     private Dictionary<CastleType, float> _typePopulationDict = new Dictionary<CastleType, float>();
 

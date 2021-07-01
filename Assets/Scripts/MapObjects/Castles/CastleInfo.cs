@@ -31,4 +31,12 @@ namespace Assets.Scripts.MapObjects.Castles
 
         public Transform Position;
     }
+
+    public enum CastleType
+    {
+        Village1,
+        Tower,
+        Barracks,
+        CastleSc
+    }
 }

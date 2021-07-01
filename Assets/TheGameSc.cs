@@ -16,8 +16,6 @@ public class TheGameSc : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
-
         _gameMap = GameObject.Find("Map").GetComponent<MapSc>();
         SettingsSc.SetPause(false);
 

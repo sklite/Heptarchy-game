@@ -1,6 +1,8 @@
-﻿using Assets.Scripts.MapObjects.Castles;
+﻿using System;
+using Assets.Scripts.MapObjects.Castles;
 using Assets.Scripts.Players;
 using System.Linq;
+using Assets.Scripts.Events;
 using Assets.Scripts.Interfaces;
 using TMPro;
 using UnityEngine;
@@ -17,10 +19,10 @@ public class CastleSc : MonoBehaviour, IHaveOwner
     SpriteRenderer _circleSprite, _castleColorSprite;
     GameObject _mapCastles;
 
-    VoronoiLakeSc _voronoiLake;
-    VoronoiLakeSc VoronoiLake
+    BorderLakeSc _voronoiLake;
+    BorderLakeSc VoronoiLake
     {
-        get { _voronoiLake ??= gameObject.transform.Find("VoronoiLake").gameObject.GetComponent<VoronoiLakeSc>(); return _voronoiLake; }
+        get { _voronoiLake ??= gameObject.transform.Find("VoronoiLake").gameObject.GetComponent<BorderLakeSc>(); return _voronoiLake; }
     }
 
     CastleBorderBuilderSc _castleBorderBuilder;
@@ -28,13 +30,7 @@ public class CastleSc : MonoBehaviour, IHaveOwner
     {
         get { _castleBorderBuilder ??= gameObject.GetComponentInChildren<CastleBorderBuilderSc>(); return _castleBorderBuilder; }
     }
-
-
-    public CastleSc()
-    {
-        //Border = new List<(Vector3, Vector3)>();
-    }
-
+    
     void Awake()
     {
         var spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
@@ -127,6 +123,7 @@ public class CastleSc : MonoBehaviour, IHaveOwner
         if (_castleColorSprite != null)
             _castleColorSprite.color = _info.CastleColor;
 
+        CastleBorders.SetColor(col);
         //VoronoiLake.SetColor(col);
         //var castleRegion = GetComponentInChildren<LakeSc>();
         //castleRegion?.SetColor(col);
@@ -140,6 +137,8 @@ public class CastleSc : MonoBehaviour, IHaveOwner
 
     public void SetOwner(BasePlayer newOwner)
     {
+        OwnerChanged?.Invoke(this, new OwnerChangedEventArgs(_currentOwner, newOwner));
+
         VoronoiLake.SetOwner(newOwner);
         _currentOwner?.LostCity(gameObject);
         _currentOwner = newOwner;
@@ -154,13 +153,20 @@ public class CastleSc : MonoBehaviour, IHaveOwner
         return _currentOwner;
     }
 
+
+
     public void BuildBorders()
     {
+        if (SettingsSc.IsPaused)
+        {
+            CastleBorders.Rebuild();
+        }
+
         VoronoiLake.BuildBorders();
        // CastleBorderBuilder
     }
 
-    public void AddBorderLine((Vector3, Vector3) border)
+    public void AddBorderLine((Vector3, Vector3) border, CastleSc oppositeCastle)
     {
         CastleBorders.AddBorderLine(border, gameObject);
         VoronoiLake.Border.Add(border);
@@ -174,21 +180,11 @@ public class CastleSc : MonoBehaviour, IHaveOwner
 
     public float BasePopulation
     {
-        get
-        {
-            return _info.BasePopulation;
-        }
-        set
-        {
-            _info.BasePopulation = value;
-        }
+        get => _info.BasePopulation;
+        set => _info.BasePopulation = value;
     }
 
-    //public CastleSize CastleType
-    //{
-    //    get { return _info.Type; }
-    //    set { _info.Type = value; }
-    //}
+    public event EventHandler<OwnerChangedEventArgs> OwnerChanged;
 
     public bool IsSelected => _info.selected;
 

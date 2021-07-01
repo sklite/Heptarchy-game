@@ -2,14 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.Events;
+using Assets.Scripts.Helpers.VoronoiGraph;
 using Assets.Scripts.Interfaces;
-using Assets.Scripts.MapObjects.Castles.Borders;
-using Assets.Scripts.MapObjects.Voronoi;
 using Assets.Scripts.Players;
 using UnityEngine;
 using UnityEngine.U2D;
 
-public class VoronoiLakeSc : MonoBehaviour, IHaveOwner
+public class BorderLakeSc : MonoBehaviour, IHaveOwner
 {
     public List<(Vector3, Vector3)> Border = new List<(Vector3, Vector3)>();
     public int Alpha = 80;
@@ -60,6 +60,8 @@ public class VoronoiLakeSc : MonoBehaviour, IHaveOwner
     {
         return _currentOwner;
     }
+
+    public event EventHandler<OwnerChangedEventArgs> OwnerChanged;
 
     public void BuildBorders()
     {

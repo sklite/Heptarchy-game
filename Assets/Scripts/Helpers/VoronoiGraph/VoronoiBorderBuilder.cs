@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts.MapObjects.Voronoi;
 using UnityEngine;
 using Mth = Assets.Scripts.Helpers.MathCalculator;
 
-namespace Assets.Scripts.MapObjects.Castles.Borders
+namespace Assets.Scripts.Helpers.VoronoiGraph
 {
     class VoronoiBorderBuilder
     {
         private readonly Vector3 _notFound = new Vector3(-99999, -99999, -99999);
-        private const float MinNodeDistance = 0.8f;
 
         public List<VorBorder> BuildClosedShape(List<(Vector3, Vector3)> borders)
         {
-            var lines = borders.Where(item => !Mth.EqualVectors(item.Item1, item.Item2, MinNodeDistance)).ToList();
+            var lines = borders.Where(item => !Mth.EqualVectors(item.Item1, item.Item2, MathCalculator.MinNodeDistance)).ToList();
 
 
             var initialBorder = new VorBorder { Line = lines.First() };
@@ -52,7 +50,7 @@ namespace Assets.Scripts.MapObjects.Castles.Borders
         {
             foreach (var line in lines)
             {
-                if (Mth.EqualVectors(targetNode, line.Item1, MinNodeDistance) || Mth.EqualVectors(targetNode, line.Item2, MinNodeDistance))
+                if (Mth.EqualVectors(targetNode, line.Item1, MathCalculator.MinNodeDistance) || Mth.EqualVectors(targetNode, line.Item2, MathCalculator.MinNodeDistance))
                 {
                     return line;
                 }
@@ -71,7 +69,7 @@ namespace Assets.Scripts.MapObjects.Castles.Borders
 
                 restLines.Remove(foundNextLine);
 
-                if (Mth.EqualVectors(foundNextLine.Item2, curBorder.Line.Item2, MinNodeDistance))
+                if (Mth.EqualVectors(foundNextLine.Item2, curBorder.Line.Item2, MathCalculator.MinNodeDistance))
                     foundNextLine = (foundNextLine.Item2, foundNextLine.Item1);
 
                 curBorder.Next = new VorBorder
@@ -93,7 +91,7 @@ namespace Assets.Scripts.MapObjects.Castles.Borders
                     break;
 
                 restLines.Remove(foundPreviousLine);
-                if (Mth.EqualVectors(foundPreviousLine.Item1, curBorder.Line.Item1, MinNodeDistance))
+                if (Mth.EqualVectors(foundPreviousLine.Item1, curBorder.Line.Item1, MathCalculator.MinNodeDistance))
                     foundPreviousLine = (foundPreviousLine.Item2, foundPreviousLine.Item1);
 
                 curBorder.Previous = new VorBorder()
@@ -112,28 +110,28 @@ namespace Assets.Scripts.MapObjects.Castles.Borders
 
             foreach (var vorBorder in borders)
             {
-                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item1.x), MapSc.Max.x, MinNodeDistance))
+                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item1.x), MapSc.Max.x, MathCalculator.MinNodeDistance))
                 {
                     x = vorBorder.Item1.x;
                     lastNode = vorBorder;
                     continue;
                 }
 
-                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item1.y), MapSc.Max.y, MinNodeDistance))
+                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item1.y), MapSc.Max.y, MathCalculator.MinNodeDistance))
                 {
                     y = vorBorder.Item1.y;
                     lastNode = vorBorder;
                     continue;
                 }
 
-                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item2.x), MapSc.Max.x, MinNodeDistance))
+                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item2.x), MapSc.Max.x, MathCalculator.MinNodeDistance))
                 {
                     x = vorBorder.Item2.x;
                     lastNode = vorBorder;
                     continue;
                 }
 
-                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item2.y), MapSc.Max.y, MinNodeDistance))
+                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item2.y), MapSc.Max.y, MathCalculator.MinNodeDistance))
                 {
                     y = vorBorder.Item2.y;
                     lastNode = vorBorder;
@@ -146,12 +144,12 @@ namespace Assets.Scripts.MapObjects.Castles.Borders
 
             (Vector3, Vector3) newBorder = default;
 
-            if (Mth.EqualsFloat(lastNode.Item1.x, x.Value, MinNodeDistance) || Mth.EqualsFloat(lastNode.Item1.y, y.Value, MinNodeDistance))
+            if (Mth.EqualsFloat(lastNode.Item1.x, x.Value, MathCalculator.MinNodeDistance) || Mth.EqualsFloat(lastNode.Item1.y, y.Value, MathCalculator.MinNodeDistance))
             {
                 newBorder = (new Vector3(x.Value, y.Value, lastNode.Item1.z), lastNode.Item1);
             }
 
-            if (Mth.EqualsFloat(lastNode.Item2.x, x.Value, MinNodeDistance) || Mth.EqualsFloat(lastNode.Item2.y, y.Value, MinNodeDistance))
+            if (Mth.EqualsFloat(lastNode.Item2.x, x.Value, MathCalculator.MinNodeDistance) || Mth.EqualsFloat(lastNode.Item2.y, y.Value, MathCalculator.MinNodeDistance))
             {
                 newBorder = (new Vector3(x.Value, y.Value, lastNode.Item2.z), lastNode.Item2);
             }

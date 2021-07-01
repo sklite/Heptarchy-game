@@ -1,4 +1,6 @@
-﻿using Assets.Scripts.Players;
+﻿using System;
+using Assets.Scripts.Events;
+using Assets.Scripts.Players;
 using UnityEngine;
 
 namespace Assets.Scripts.Interfaces
@@ -8,5 +10,6 @@ namespace Assets.Scripts.Interfaces
         void SetColor(Color col);
         void SetOwner(BasePlayer newOwner);
         BasePlayer GetOwner();
+        public event EventHandler<OwnerChangedEventArgs> OwnerChanged;
     }
 }
