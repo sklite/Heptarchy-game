@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Scripts.Helpers.VoronoiGraph
@@ -7,6 +8,8 @@ namespace Assets.Scripts.Helpers.VoronoiGraph
     public class VoronoiSc2 : MonoBehaviour
     {
         Vector2Int _imageDim = new Vector2Int(Screen.width, Screen.height);
+        //Vector2Int _imageDim = new Vector2Int(SettingsSc.ScreenWidth, SettingsSc.ScreenHeight);
+        //Vector2Int _imageDim = new Vector2Int(426, 240);
 
         private int _regionAmount;
         private List<(Vector3, Vector3)> lines = new List<(Vector3, Vector3)>();

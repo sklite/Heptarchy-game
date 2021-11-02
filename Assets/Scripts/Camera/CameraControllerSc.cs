@@ -39,7 +39,7 @@ public class CameraControllerSc : MonoBehaviour
     {
         //   ui = GameObject.Find("Controls");
         Application.targetFrameRate = 60;
-
+        Camera.main.aspect = 16f / 9f;
         QualitySettings.vSyncCount = 0;
 
     }
@@ -47,8 +47,9 @@ public class CameraControllerSc : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _botLeft = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0));
-        _topRight = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+        //for scrolling
+        //_botLeft = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0));
+        //_topRight = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
         //print position of mouse
         var mousex = (Input.mousePosition.x);
         var mousey = (Input.mousePosition.y);
@@ -70,10 +71,4 @@ public class CameraControllerSc : MonoBehaviour
     {
         transform.Translate(direction, Space.Self);
     }
-
-
-    //public float Right
-    //{
-    //    get { return transform.position.x + Camera.main.orthographicSize; }
-    //}
 }

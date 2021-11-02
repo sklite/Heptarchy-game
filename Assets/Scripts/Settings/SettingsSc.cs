@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class SettingsSc : MonoBehaviour
 {
-    public static float ScreenHeight;
-    public static float ScreenWidth;
+    public const int ScreenHeight = 1080;//2340;
+    public static int ScreenWidth = 2340;//1080;
 
     public static float ConscriptKoeff;
 
@@ -51,15 +51,8 @@ public class SettingsSc : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
         IsFinished = false;
-
-        var camera = Camera.main;
-        float aspect = camera.aspect;
-
-        ScreenHeight = camera.orthographicSize * 2;
-        ScreenWidth = ScreenHeight * aspect;
-
+        
         ConscriptKoeff = 1.3f;
 
         var spawner = GameObject.FindGameObjectWithTag("Respawn").GetComponent<CastleSpawnerSc>();
@@ -79,10 +72,10 @@ public class SettingsSc : MonoBehaviour
         IsPaused = value;
     }
 
-    public static SettingsSc FindMe()
-    {
-        return GameObject.FindGameObjectWithTag("Settings").GetComponent<SettingsSc>();
-    }
+    //public static SettingsSc FindMe()
+    //{
+    //    return GameObject.FindGameObjectWithTag("Settings").GetComponent<SettingsSc>();
+    //}
 
     public static void SetWinner(BasePlayer winner)
     {
