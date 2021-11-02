@@ -9,12 +9,12 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.U2D;
 
-public class CastleBorderBuilderSc : MonoBehaviour, IHaveOwner
+public class CastleBorderBuilderSc : MonoBehaviour
 {
     public GameObject BorderPrefab;
 
     private List<BorderLineSc> _borderLines = new List<BorderLineSc>();
-
+    private Color _ownerColor;
     private GameObject _castle;
 
     private List<(Vector3, Vector3)> _vectors = new List<(Vector3, Vector3)>();
@@ -32,13 +32,13 @@ public class CastleBorderBuilderSc : MonoBehaviour, IHaveOwner
 
     public void Rebuild()
     {
-        foreach (var vector in _vectors)
-        {
-            AddBorderLine(vector, _castle, false);
-        }
+        //foreach (var vector in _vectors)
+        //{
+        //    AddBorderLine(vector, _castle, false);
+        //}
     }
 
-    public void AddBorderLine((Vector3, Vector3) border, GameObject castle, bool pop = true)
+    public void AddBorderLine((Vector3, Vector3) border, GameObject castle, CastleSc oppositeCastle,  bool pop = true)
     {
         _castle = castle;
         if (pop)
@@ -81,18 +81,23 @@ public class CastleBorderBuilderSc : MonoBehaviour, IHaveOwner
             spline.InsertPointAt(1, localA);
         }
 
-        var borderLineSc = newBorder.GetComponent<BorderLineSc>();
-        borderLineSc.SetColor(castle.GetComponent<CastleSc>().GetOwner().GetPlayerColor());
+        var ownerCastleSc = castle.GetComponent<CastleSc>();
+        //ownerCastleSc.OwnerChanged += OwnerCastleSc_OwnerChanged;
+        //oppositeCastle.OwnerChanged += OppositeCastle_OwnerChanged;
 
-        _borderLines.Add(newBorder.GetComponent<BorderLineSc>());
+        var borderLineSc = newBorder.GetComponent<BorderLineSc>();
+       // borderLineSc.SetColor(ownerCastleSc.GetOwner().GetPlayerColor());
+        borderLineSc.SetOwnerCastle(ownerCastleSc, oppositeCastle);
+
+        _borderLines.Add(borderLineSc);
     }
 
-    public void SetColor(Color col)
+    public void SetInitialColor(Color col)
     {
-        foreach (var borderLine in _borderLines)
-        {
-            borderLine.SetColor(col);
-        }
+        //foreach (var borderLine in _borderLines)
+        //{
+        //    borderLine.SetColor(col);
+        //}
     }
 
     public void SetOwner(BasePlayer newOwner)

@@ -28,6 +28,7 @@ public class CastleSpawnerSc : MonoBehaviour
 
 	void Start()
     {
+        print("Starting castles spawn");
         if (castlesPrefaps.Length != castlesFrequences.Length)
             throw new Exception("You should provide all castles and their frequencies");
 
@@ -54,8 +55,10 @@ public class CastleSpawnerSc : MonoBehaviour
 		AssignCitiesToPlayers();
         InitPlayers();
         //TurnCastlesColliders(false);
-        
-	}
+
+
+        print("Castles spawn has finished");
+    }
 
 	private void InitPlayers()
 	{

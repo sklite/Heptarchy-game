@@ -123,7 +123,8 @@ public class CastleSc : MonoBehaviour, IHaveOwner
         if (_castleColorSprite != null)
             _castleColorSprite.color = _info.CastleColor;
 
-        CastleBorders.SetColor(col);
+        //CastleBorders.SetInitialColor(col);
+
         //VoronoiLake.SetColor(col);
         //var castleRegion = GetComponentInChildren<LakeSc>();
         //castleRegion?.SetColor(col);
@@ -137,8 +138,6 @@ public class CastleSc : MonoBehaviour, IHaveOwner
 
     public void SetOwner(BasePlayer newOwner)
     {
-        OwnerChanged?.Invoke(this, new OwnerChangedEventArgs(_currentOwner, newOwner));
-
         VoronoiLake.SetOwner(newOwner);
         _currentOwner?.LostCity(gameObject);
         _currentOwner = newOwner;
@@ -146,6 +145,8 @@ public class CastleSc : MonoBehaviour, IHaveOwner
         _currentOwner.ControlledCities.Add(gameObject);
         SetColor(newOwner.GetPlayerColor());
         Deselect();
+
+        OwnerChanged?.Invoke(this, new OwnerChangedEventArgs(_currentOwner, newOwner));
     }
 
     public BasePlayer GetOwner()
@@ -168,7 +169,7 @@ public class CastleSc : MonoBehaviour, IHaveOwner
 
     public void AddBorderLine((Vector3, Vector3) border, CastleSc oppositeCastle)
     {
-        CastleBorders.AddBorderLine(border, gameObject);
+        CastleBorders.AddBorderLine(border, gameObject, oppositeCastle);
         VoronoiLake.Border.Add(border);
     }
 
@@ -199,8 +200,8 @@ public class CastleSc : MonoBehaviour, IHaveOwner
                 armyScript.Destroy();
                 return;
             }
-            else
-                return;
+
+            return;
         }
 
         if (armyScript.Destination != gameObject && _currentOwner.IsGaia)

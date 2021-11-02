@@ -47,6 +47,7 @@ namespace Assets.Scripts.Helpers.VoronoiGraph
                 catch
                 {
                     string s = "\nP " + i + ": " + ge[i].x1 + ", " + ge[i].y1 + " || " + ge[i].x2 + ", " + ge[i].y2;
+                    print($"Error at VoronoiScript {s}");
                 }
             }
 

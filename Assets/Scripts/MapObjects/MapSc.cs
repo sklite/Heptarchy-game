@@ -10,8 +10,10 @@ public class MapSc : MonoBehaviour
     public static Rect HabitableMapSize = new Rect(-200, -98f, 400, 196f);
 
     //Visible parts of the map
-    public static readonly Vector3 Min = new Vector3(-246.6667f, -120);
-    public static readonly Vector3 Max = new Vector3(246.6667f, 120);
+    //public static readonly Vector3 Min = new Vector3(-246.6667f, -120);
+    //public static readonly Vector3 Max = new Vector3(246.6667f, 120);
+    public static readonly Vector3 Min = new Vector3(-208.7f, -120);
+    public static readonly Vector3 Max = new Vector3(208.7f, 120);
 
     //counts from the center of coordinates system
     //public static readonly Vector2 MapSize = new Vector2(30, 20);

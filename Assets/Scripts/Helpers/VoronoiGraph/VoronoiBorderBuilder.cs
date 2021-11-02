@@ -14,7 +14,6 @@ namespace Assets.Scripts.Helpers.VoronoiGraph
         {
             var lines = borders.Where(item => !Mth.EqualVectors(item.Item1, item.Item2, MathCalculator.MinNodeDistance)).ToList();
 
-
             var initialBorder = new VorBorder { Line = lines.First() };
 
             AddCornerNodes(lines);
@@ -105,56 +104,77 @@ namespace Assets.Scripts.Helpers.VoronoiGraph
         
         void AddCornerNodes(List<(Vector3, Vector3)> borders)
         {
-            float? x = null, y = null;
-            (Vector3, Vector3) lastNode = default;
+            var foundBorders = new Dictionary<AlignedBorder, Vector3>();
 
             foreach (var vorBorder in borders)
             {
-                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item1.x), MapSc.Max.x, MathCalculator.MinNodeDistance))
+                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item1.x), MapSc.Max.x, Mth.MinNodeDistance))
                 {
-                    x = vorBorder.Item1.x;
-                    lastNode = vorBorder;
-                    continue;
+                    if (vorBorder.Item1.x > 0)
+                        foundBorders[AlignedBorder.Right] = vorBorder.Item1;
+                    else
+                        foundBorders[AlignedBorder.Left] = vorBorder.Item1;
                 }
 
-                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item1.y), MapSc.Max.y, MathCalculator.MinNodeDistance))
+                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item1.y), MapSc.Max.y, Mth.MinNodeDistance))
                 {
-                    y = vorBorder.Item1.y;
-                    lastNode = vorBorder;
-                    continue;
+                    if (vorBorder.Item1.y > 0)
+                        foundBorders[AlignedBorder.Top] = vorBorder.Item1;
+                    else
+                        foundBorders[AlignedBorder.Bottom] = vorBorder.Item1;
                 }
 
-                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item2.x), MapSc.Max.x, MathCalculator.MinNodeDistance))
+                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item2.x), MapSc.Max.x, Mth.MinNodeDistance))
                 {
-                    x = vorBorder.Item2.x;
-                    lastNode = vorBorder;
-                    continue;
+                    if (vorBorder.Item2.x > 0)
+                        foundBorders[AlignedBorder.Right] = vorBorder.Item2;
+                    else
+                        foundBorders[AlignedBorder.Left] = vorBorder.Item2;
                 }
 
-                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item2.y), MapSc.Max.y, MathCalculator.MinNodeDistance))
+                if (Mth.EqualsFloat(Math.Abs(vorBorder.Item2.y), MapSc.Max.y, Mth.MinNodeDistance))
                 {
-                    y = vorBorder.Item2.y;
-                    lastNode = vorBorder;
-                    continue;
+                    if (vorBorder.Item2.y > 0)
+                        foundBorders[AlignedBorder.Top] = vorBorder.Item2;
+                    else
+                        foundBorders[AlignedBorder.Bottom] = vorBorder.Item2;
                 }
             }
 
-            if (x == null || y == null)
+            if (foundBorders.Count != 2)
                 return;
-
+            
             (Vector3, Vector3) newBorder = default;
 
-            if (Mth.EqualsFloat(lastNode.Item1.x, x.Value, MathCalculator.MinNodeDistance) || Mth.EqualsFloat(lastNode.Item1.y, y.Value, MathCalculator.MinNodeDistance))
+            if (foundBorders.ContainsKey(AlignedBorder.Left) && foundBorders.ContainsKey(AlignedBorder.Top))
             {
-                newBorder = (new Vector3(x.Value, y.Value, lastNode.Item1.z), lastNode.Item1);
+                newBorder = (foundBorders[AlignedBorder.Left], new Vector3(MapSc.Min.x, MapSc.Max.y, foundBorders[AlignedBorder.Left].z));
             }
 
-            if (Mth.EqualsFloat(lastNode.Item2.x, x.Value, MathCalculator.MinNodeDistance) || Mth.EqualsFloat(lastNode.Item2.y, y.Value, MathCalculator.MinNodeDistance))
+            if (foundBorders.ContainsKey(AlignedBorder.Top) && foundBorders.ContainsKey(AlignedBorder.Right))
             {
-                newBorder = (new Vector3(x.Value, y.Value, lastNode.Item2.z), lastNode.Item2);
+                newBorder = (foundBorders[AlignedBorder.Top], new Vector3(MapSc.Max.x, MapSc.Max.y, foundBorders[AlignedBorder.Top].z));
             }
 
+            if (foundBorders.ContainsKey(AlignedBorder.Right) && foundBorders.ContainsKey(AlignedBorder.Bottom))
+            {
+                newBorder = (foundBorders[AlignedBorder.Right], new Vector3(MapSc.Max.x, MapSc.Min.y, foundBorders[AlignedBorder.Right].z));
+            }
+
+            if (foundBorders.ContainsKey(AlignedBorder.Bottom) && foundBorders.ContainsKey(AlignedBorder.Left))
+            {
+                newBorder = (foundBorders[AlignedBorder.Bottom], new Vector3(MapSc.Min.x, MapSc.Min.y, foundBorders[AlignedBorder.Bottom].z));
+            }
+            
             borders.Add(newBorder);
+        }
+
+        enum AlignedBorder
+        {
+            Top,
+            Left,
+            Right,
+            Bottom
         }
     }
 }
