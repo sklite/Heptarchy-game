@@ -12,7 +12,8 @@ public class TouchScrollerSc : MonoBehaviour
 
     private Vector3 _previousMousePosition = Vector3.zero;
 
-    
+    public GameObject _armyPointPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +35,7 @@ public class TouchScrollerSc : MonoBehaviour
         {
             _previousMousePosition = Vector3.zero;
             _isPressed = false;
+
         }
 
         if (_isPressed)

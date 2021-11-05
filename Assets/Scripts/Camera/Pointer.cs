@@ -48,10 +48,8 @@ public class Pointer : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            _particleSpawner.CreateLiquidParticle(Camera.main.ScreenToWorldPoint(Input.mousePosition), -1);
-
-            //_particleSpawner.CheckPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-
+            //_particleSpawner.CreateLiquidParticle(Camera.main.ScreenToWorldPoint(Input.mousePosition), -1);
+            
             _inputStartPoint = Input.mousePosition;
             _inputStartPoint.y = Screen.height - _inputStartPoint.y;
         }
@@ -166,7 +164,7 @@ public class Pointer : MonoBehaviour
 
     private bool IsInsideSelection(Bounds bounds, GameObject castle)
     {
-        var collider = castle.GetComponent<BoxCollider2D>();
+        var collider = castle.GetComponent<CircleCollider2D>();
         if (collider == null)
             return false;
 

@@ -190,7 +190,7 @@ public class CastleSc : MonoBehaviour, IHaveOwner
     public bool IsSelected => _info.selected;
 
 
-    internal void Visit(ArmySc armyScript)
+    internal void Visit(ArmyParticleSc armyScript)
     {
         if (armyScript.GetOwner() == _currentOwner)
         {

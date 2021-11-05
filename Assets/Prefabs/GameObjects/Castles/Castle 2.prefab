@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 3710452872166575808}
   - component: {fileID: 2700008003838329444}
   - component: {fileID: -4363187344304518599}
+  - component: {fileID: 5849628132320501223}
   m_Layer: 9
   m_Name: Castle 2
   m_TagString: Castles
@@ -185,7 +186,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4030451349662988357}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -218,6 +219,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CastleType: 2
   CastleNumber: 0
+--- !u!58 &5849628132320501223
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4030451349662988357}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &7500565809244077813
 GameObject:
   m_ObjectHideFlags: 0

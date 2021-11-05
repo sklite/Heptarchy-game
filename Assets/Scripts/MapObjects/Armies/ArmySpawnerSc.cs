@@ -5,7 +5,10 @@ using UnityEngine;
 public class ArmySpawnerSc : MonoBehaviour
 {
     public float ArmySpeed = 0.025f;
+
+    public float StartPositionOffset = 0.5f;
     public GameObject armyPrefab;
+    public GameObject armyDotPrefab;
     // Use this for initialization
     void Start()
     {
@@ -20,22 +23,37 @@ public class ArmySpawnerSc : MonoBehaviour
     }
 
 
-    public GameObject CreateArmy(GameObject sourceCastle, GameObject destination)
+    public ArmyParticleSc CreateArmy(GameObject sourceCastle, GameObject destination)
     {
         var castleScript = sourceCastle.GetComponent<CastleSc>();
 
         var armySize = ((int)(castleScript.CurrentPopulation / SettingsSc.ConscriptKoeff));
         castleScript.CurrentPopulation -= armySize;
-        var newArmy = Instantiate(armyPrefab, sourceCastle.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+        //var newArmy = Instantiate(armyPrefab, sourceCastle.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
 
-        var armyScript = newArmy.GetComponent<ArmySc>();
+        //var armyScript = newArmy.GetComponent<ArmySc>();
+        //var speed = CalculateSpeed(sourceCastle.transform.position, destination.transform.position);
+
+        //armyScript.SetOwner(castleScript.GetOwner());
+        //armyScript.SetSpeed(speed);
+        //armyScript.Amount = armySize;
+        //armyScript.Destination = destination;
+        var position = sourceCastle.transform.position;
+        position.y -= StartPositionOffset;
+
+        var newArmy = Instantiate(armyDotPrefab, position, Quaternion.Euler(new Vector3(0, 0, 0)));
+
+        var armyScript = newArmy.GetComponent<ArmyParticleSc>();
         var speed = CalculateSpeed(sourceCastle.transform.position, destination.transform.position);
 
         armyScript.SetOwner(castleScript.GetOwner());
         armyScript.SetSpeed(speed);
         armyScript.Amount = armySize;
         armyScript.Destination = destination;
-        return newArmy;
+
+
+
+        return armyScript;
     }
 
     public GameObject[] GetArmies()

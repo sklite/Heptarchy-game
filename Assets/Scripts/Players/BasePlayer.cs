@@ -78,7 +78,7 @@ namespace Assets.Scripts.Players
                 if (castleScript.CurrentPopulation < 2)
                     continue;
                 var newArmyObject = _armySpawner.CreateArmy(item, target);
-                newArmyObject.GetComponent<ArmySc>().SetOwner(this);
+                newArmyObject.SetOwner(this);
 
             }
             SelectedCities.Clear();
