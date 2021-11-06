@@ -24,13 +24,13 @@ public class TheGameSc : MonoBehaviour
         if (playerInfos != null)
         {
             var playerList = new List<BasePlayer>();
-            playerList.Add(new HumanPlayer(Color.blue, _gameMap));
-            playerList.Add(new AiPlayer(Color.white, _gameMap) { IsGaia = true });
+            playerList.Add(new HumanPlayer(Color.blue));
+            playerList.Add(new AiPlayer(Color.white) { IsGaia = true });
             (playerList[1] as AiPlayer).SetBrains(new SwarmLogic(this), AiEnumeration.NoAi);
 
             foreach (var playerInfo in playerInfos)
             {
-                var newAiPlayer = new AiPlayer(playerInfo.Color, _gameMap);
+                var newAiPlayer = new AiPlayer(playerInfo.Color);
 
                 BaseBrain logic = null;
 
@@ -50,17 +50,17 @@ public class TheGameSc : MonoBehaviour
         {
             _players = new BasePlayer[]
             {
-                new HumanPlayer(Color.blue, _gameMap),
-                new AiPlayer(Color.white, _gameMap)  {IsGaia = true},
-                new AiPlayer(Color.red, _gameMap),
-               // new AiPlayer(Color.green, _gameMap),
-               // new AiPlayer(Color.yellow, _gameMap)
+                new HumanPlayer(Color.blue),
+                new AiPlayer(Color.white)  {IsGaia = true},
+                new AiPlayer(Color.red),
+                new AiPlayer(Color.green),
+                new AiPlayer(Color.yellow)
             };
 
             (_players[1] as AiPlayer).SetBrains(new SwarmLogic(this), AiEnumeration.NoAi);
             (_players[2] as AiPlayer).SetBrains(new StrategistLogic(this), AiEnumeration.Normal);
-            //(_players[3] as AiPlayer).SetBrains(new StrategistLogic(this), AiEnumeration.Normal);
-            //(_players[4] as AiPlayer).SetBrains(new StrategistLogic(this), AiEnumeration.Normal);
+            (_players[3] as AiPlayer).SetBrains(new StrategistLogic(this), AiEnumeration.Normal);
+            (_players[4] as AiPlayer).SetBrains(new StrategistLogic(this), AiEnumeration.Normal);
         }
 
     }

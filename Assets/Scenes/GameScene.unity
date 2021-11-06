@@ -1656,7 +1656,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a4fbe832530d0246ae8563442631c8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ArmySpeed: 0.25
+  ArmySpeed: 15
+  StartPositionOffset: 3
   armyPrefab: {fileID: 2122092313327515633, guid: 2eb56c38e42ef73478cb2de8c666ce34,
     type: 3}
   armyDotPrefab: {fileID: 1100951054499092543, guid: 15f50d4d949cb3a43a0d563027cbc269,

@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class SettingsSc : MonoBehaviour
 {
-    public const int ScreenHeight = 1080;//2340;
-    public static int ScreenWidth = 2340;//1080;
+    //public const int ScreenHeight = 1080;//2340;
+    //public static int ScreenWidth = 2340;//1080;
 
     public static float ConscriptKoeff;
 

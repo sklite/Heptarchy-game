@@ -32,5 +32,23 @@ namespace Assets.Scripts.Helpers
                 return false;
             return true;
         }
+
+        public static Vector3 Calc2DSpeed(Vector3 source, Vector3 destination, float speed)
+        {
+            float katetX = Mathf.Abs(source.x - destination.x);
+            float katetY = Mathf.Abs(source.y - destination.y);
+            float hypotenuza = (float)Mathf.Sqrt(katetX * katetX + katetY * katetY);
+
+            var dx = speed * (katetX / hypotenuza);
+            var dy = speed * (katetY / hypotenuza);
+
+            if (source.y > destination.y)
+                dy *= -1;
+
+            if (source.x > destination.x)
+                dx *= -1;
+
+            return new Vector3(dx, dy);
+        }
     }
 }

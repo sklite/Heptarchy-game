@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.Helpers;
 using Assets.Scripts.Players;
 using UnityEngine;
 
 public class ArmyParticleSc : MonoBehaviour
 {
-    Vector3 _speed;
+    float _speed;
     // Use this for collisions check
     GameObject[] _castles;
 
@@ -37,9 +38,9 @@ public class ArmyParticleSc : MonoBehaviour
 
     void FixedUpdate()
     {
-        var newPosition = new Vector2(transform.position.x + _speed.x, transform.position.y + _speed.y);
-        _rigidBody.MovePosition(newPosition);
-
+        var armySpeed2d = MathCalculator.Calc2DSpeed(transform.position, Destination.transform.position, _speed);
+        _rigidBody.MovePosition(transform.position + armySpeed2d * Time.deltaTime);
+        
         CheckCollisions();
     }
 
@@ -74,7 +75,7 @@ public class ArmyParticleSc : MonoBehaviour
         set;
     }
 
-    public void SetSpeed(Vector3 newSpeed)
+    public void SetBaseSpeed(float newSpeed)
     {
         _speed = newSpeed;
     }

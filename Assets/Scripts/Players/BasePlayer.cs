@@ -26,7 +26,7 @@ namespace Assets.Scripts.Players
         // может ли вообще ходить
         public bool canGo = false;
 
-        public BasePlayer(Color color, MapSc gameMap)
+        public BasePlayer(Color color)
         {
             ControlledCities = new List<GameObject>();
             SelectedCities = new List<GameObject>();
@@ -68,17 +68,12 @@ namespace Assets.Scripts.Players
 
         internal void SendTroops(GameObject target)
         {
-            //var script = target.GetComponent<CastleSc>();
-
             foreach (var item in SelectedCities)
             {
-                if (target == item)
+                if (item == target)
                     continue;
-                var castleScript = item.GetComponent<CastleSc>();
-                if (castleScript.CurrentPopulation < 2)
-                    continue;
-                var newArmyObject = _armySpawner.CreateArmy(item, target);
-                newArmyObject.SetOwner(this);
+                
+                _armySpawner.CreateArmy(item, target);
 
             }
             SelectedCities.Clear();

@@ -13,8 +13,8 @@ namespace Assets.Scripts.Players
         Dictionary<CastleSc, float> _citiesToAttack;
         BaseBrain _brains;
 
-        public AiPlayer(Color color, MapSc gameMap)
-            : base(color, gameMap)
+        public AiPlayer(Color color)
+            : base(color)
         {
             _citiesToAttack = new Dictionary<CastleSc, float>();
         }

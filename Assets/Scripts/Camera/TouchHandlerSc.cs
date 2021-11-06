@@ -15,8 +15,8 @@ public class TouchHandlerSc : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonUp(0)) 
-            //if (false)
+        //if (Input.GetMouseButtonUp(0)) 
+            if (false)
         {
             var mousex = (Input.mousePosition.x);
             var mousey = (Input.mousePosition.y);

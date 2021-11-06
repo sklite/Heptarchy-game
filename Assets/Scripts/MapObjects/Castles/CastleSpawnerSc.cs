@@ -196,7 +196,6 @@ public class CastleSpawnerSc : MonoBehaviour
 
     public void CleanMap(CastleStoredData castleStoredData)
     {
-
         for (int i = 0; i < _gameScript.GetNonGaiaPlayers().Length; i++)
         {
             var player = _gameScript.GetNonGaiaPlayers()[i];
@@ -216,9 +215,8 @@ public class CastleSpawnerSc : MonoBehaviour
             castleScript.SetOwner(castleData.Owner);
             castleScript.SetBasePopulation(castleData.BasePopulation);
         }
-
-        var armySpawner = GameObject.Find("ArmySpawner").GetComponent<ArmySpawnerSc>();
-        var armies = armySpawner.GetArmies();
+        
+        var armies = GameObject.FindGameObjectsWithTag("Armies");
         if (armies == null || armies.Length == 0)
             return;
         for (int i = 0; i < armies.Length; i++)
@@ -226,7 +224,6 @@ public class CastleSpawnerSc : MonoBehaviour
             var armyObj = armies[i];
             Destroy(armyObj);
         }
-
 
         SettingsSc.RegenerateMap = true;
     }
