@@ -33,12 +33,15 @@ public class ArmyParticleSc : MonoBehaviour
 
     void Awake()
     {
-        _sprite = GetComponent<SpriteRenderer>();
+        _sprite = GetComponentInChildren<SpriteRenderer>();
     }
 
     void FixedUpdate()
     {
         var armySpeed2d = MathCalculator.Calc2DSpeed(transform.position, Destination.transform.position, _speed);
+
+        _sprite.flipX = armySpeed2d.x < 0;
+
         _rigidBody.MovePosition(transform.position + armySpeed2d * Time.deltaTime);
         
         CheckCollisions();
@@ -87,7 +90,9 @@ public class ArmyParticleSc : MonoBehaviour
 
     public void SetOwner(BasePlayer newOwner)
     {
+        
         _sprite.color = newOwner.GetPlayerColor();
+        _sprite.color = Color.Lerp(_sprite.color, Color.white, 0.8f);
         _owner = newOwner;
     }
 
