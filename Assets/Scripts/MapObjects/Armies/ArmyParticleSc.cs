@@ -7,18 +7,18 @@ using UnityEngine;
 
 public class ArmyParticleSc : MonoBehaviour
 {
+    public bool IsFighting = false;
     float _speed;
+
+
     // Use this for collisions check
     GameObject[] _castles;
-
     BasePlayer _owner;
     CircleCollider2D _collider;
 
-    // Color color;
     SpriteRenderer _sprite;
-
-    GameObject _mapArmies;
     Rigidbody2D _rigidBody;
+    Animator _animator;
 
     // Start is called before the first frame update
     void Start()
@@ -27,8 +27,9 @@ public class ArmyParticleSc : MonoBehaviour
         _castles = GameObject.FindGameObjectsWithTag("Castles");
 
         _collider = GetComponent<CircleCollider2D>();
-
         transform.SetParent(GameObject.Find("Armies").transform);
+
+        _animator = GetComponentInChildren<Animator>();
     }
 
     void Awake()
@@ -38,6 +39,11 @@ public class ArmyParticleSc : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (IsFighting)
+        {
+            return;
+        }
+        
         var armySpeed2d = MathCalculator.Calc2DSpeed(transform.position, Destination.transform.position, _speed);
 
         _sprite.flipX = armySpeed2d.x < 0;
@@ -52,6 +58,24 @@ public class ArmyParticleSc : MonoBehaviour
     {
         
     }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (IsFighting)
+            return;
+
+        if (collision.gameObject.tag == "Armies")
+        {
+            var incomingArmySc = collision.gameObject.GetComponent<ArmyParticleSc>();
+            if (incomingArmySc.GetOwner() == _owner)
+                return;
+
+            _animator.Play("Attack", 0, 0.15f);
+            IsFighting = true;
+            StartCoroutine(Die(5));
+        }
+    }
+
 
     void CheckCollisions()
     {
@@ -90,10 +114,21 @@ public class ArmyParticleSc : MonoBehaviour
 
     public void SetOwner(BasePlayer newOwner)
     {
-        
         _sprite.color = newOwner.GetPlayerColor();
-        _sprite.color = Color.Lerp(_sprite.color, Color.white, 0.8f);
+        _sprite.color = Color.Lerp(_sprite.color, Color.white, 0.9f);
         _owner = newOwner;
+    }
+
+    internal IEnumerator Die(float delay)
+    {
+        _collider.enabled = false;
+        _rigidBody.bodyType = RigidbodyType2D.Static; 
+        yield return new WaitForSeconds(delay);
+        _animator.Play("Die", 0, 0.25f);
+        yield return new WaitForSeconds(delay);
+        //if (delay > 0)
+
+        Destroy();
     }
 
     internal void Destroy()
