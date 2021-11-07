@@ -80,11 +80,9 @@ public class CastleSc : MonoBehaviour, IHaveOwner
 
         if (SettingsSc.IsPaused)
         {
-            BuildBorders();
+            //BuildBorders();
             return;
         }
-
-       
 
         if (CurrentPopulation < _info.BasePopulation)
             CurrentPopulation += _info.growthRate;
@@ -92,10 +90,8 @@ public class CastleSc : MonoBehaviour, IHaveOwner
         if (_info.selected)
         {
             var timeFraction = Time.realtimeSinceStartup - (int)Time.realtimeSinceStartup;
-            _info.CurrentColor = _gradient.Evaluate(timeFraction);
-            //_circleSprite.color = _info.CurrentColor;
             if (_castleColorSprite != null)
-                _castleColorSprite.color = _info.CurrentColor;
+                _castleColorSprite.color = _gradient.Evaluate(timeFraction);
         }
     }
 
@@ -158,13 +154,7 @@ public class CastleSc : MonoBehaviour, IHaveOwner
 
     public void BuildBorders()
     {
-        if (SettingsSc.IsPaused)
-        {
-            CastleBorders.Rebuild();
-        }
-
         VoronoiLake.BuildBorders();
-       // CastleBorderBuilder
     }
 
     public void AddBorderLine((Vector3, Vector3) border, CastleSc oppositeCastle)
@@ -218,9 +208,6 @@ public class CastleSc : MonoBehaviour, IHaveOwner
 
         CurrentPopulation = Mathf.Abs(CurrentPopulation - armyScript.Amount);
         armyScript.Destroy();
-
-
-
     }
 
     internal void SetBasePopulation(float p)

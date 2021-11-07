@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Assets.Scripts.Helpers;
 using Assets.Scripts.Players;
 using UnityEngine;
+using UnityEngine.Windows.WebCam;
 
 public class ArmyParticleSc : MonoBehaviour
 {
-    public bool IsFighting = false;
-    float _speed;
+    public ArmyIs CurentState = ArmyIs.Moving;
+    float _speed = 10;
 
 
     // Use this for collisions check
@@ -39,18 +41,24 @@ public class ArmyParticleSc : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (IsFighting)
+        if (CurentState == ArmyIs.Fighting)
         {
             return;
         }
-        
+
+        if (CurentState == ArmyIs.GoingToFight)
+        {
+            int sf = 20;
+        }
+
         var armySpeed2d = MathCalculator.Calc2DSpeed(transform.position, Destination.transform.position, _speed);
-
         _sprite.flipX = armySpeed2d.x < 0;
-
         _rigidBody.MovePosition(transform.position + armySpeed2d * Time.deltaTime);
-        
-        CheckCollisions();
+
+        if (CurentState == ArmyIs.Moving)
+        {
+            CheckCastleCollisions();
+        }
     }
 
     // Update is called once per frame
@@ -59,25 +67,33 @@ public class ArmyParticleSc : MonoBehaviour
         
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    IEnumerator OnCollisionEnter2D(Collision2D collision)
     {
-        if (IsFighting)
-            return;
+        if (CurentState != ArmyIs.Moving)
+            yield break;
 
         if (collision.gameObject.tag == "Armies")
         {
             var incomingArmySc = collision.gameObject.GetComponent<ArmyParticleSc>();
             if (incomingArmySc.GetOwner() == _owner)
-                return;
+                yield break;
 
+            //Go to the enemy army for 0.3 sec
+            CurentState = ArmyIs.GoingToFight;
+            Destination = collision.gameObject;
+            yield return new WaitForSeconds(0.3f);
+
+            //And then attack
             _animator.Play("Attack", 0, 0.15f);
-            IsFighting = true;
+            CurentState = ArmyIs.Fighting;
+
+
             StartCoroutine(Die(5));
         }
     }
 
 
-    void CheckCollisions()
+    void CheckCastleCollisions()
     {
         foreach (var castle in _castles)
         {
@@ -115,7 +131,7 @@ public class ArmyParticleSc : MonoBehaviour
     public void SetOwner(BasePlayer newOwner)
     {
         _sprite.color = newOwner.GetPlayerColor();
-        _sprite.color = Color.Lerp(_sprite.color, Color.white, 0.9f);
+        _sprite.color = Color.Lerp(_sprite.color, Color.white, 0.85f);
         _owner = newOwner;
     }
 
@@ -126,13 +142,23 @@ public class ArmyParticleSc : MonoBehaviour
         yield return new WaitForSeconds(delay);
         _animator.Play("Die", 0, 0.25f);
         yield return new WaitForSeconds(delay);
-        //if (delay > 0)
-
         Destroy();
+    }
+
+    IEnumerator Wait(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
     }
 
     internal void Destroy()
     {
         Destroy(gameObject);
     }
+}
+
+public enum ArmyIs
+{
+    Moving,
+    GoingToFight,
+    Fighting
 }

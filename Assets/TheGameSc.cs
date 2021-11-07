@@ -52,14 +52,14 @@ public class TheGameSc : MonoBehaviour
                 new HumanPlayer(Color.blue),
                 new AiPlayer(Color.white)  {IsGaia = true},
                 new AiPlayer(Color.red),
-                new AiPlayer(Color.green),
-                new AiPlayer(Color.yellow)
+                //new AiPlayer(Color.green),
+                //new AiPlayer(Color.yellow)
             };
 
             (_players[1] as AiPlayer).SetBrains(new SwarmLogic(this), AiEnumeration.NoAi);
             (_players[2] as AiPlayer).SetBrains(new StrategistLogic(this), AiEnumeration.Normal);
-            (_players[3] as AiPlayer).SetBrains(new StrategistLogic(this), AiEnumeration.Normal);
-            (_players[4] as AiPlayer).SetBrains(new SwarmLogic(this), AiEnumeration.Normal);
+            //(_players[3] as AiPlayer).SetBrains(new StrategistLogic(this), AiEnumeration.Normal);
+            //(_players[4] as AiPlayer).SetBrains(new SwarmLogic(this), AiEnumeration.Normal);
         }
 
     }

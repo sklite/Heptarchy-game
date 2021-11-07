@@ -30,14 +30,6 @@ public class CastleBorderBuilderSc : MonoBehaviour
         
     }
 
-    public void Rebuild()
-    {
-        //foreach (var vector in _vectors)
-        //{
-        //    AddBorderLine(vector, _castle, false);
-        //}
-    }
-
     public void AddBorderLine((Vector3, Vector3) border, GameObject castle, CastleSc oppositeCastle,  bool pop = true)
     {
         _castle = castle;
@@ -91,24 +83,4 @@ public class CastleBorderBuilderSc : MonoBehaviour
 
         _borderLines.Add(borderLineSc);
     }
-
-    public void SetInitialColor(Color col)
-    {
-        //foreach (var borderLine in _borderLines)
-        //{
-        //    borderLine.SetColor(col);
-        //}
-    }
-
-    public void SetOwner(BasePlayer newOwner)
-    {
-        throw new NotImplementedException();
-    }
-
-    public BasePlayer GetOwner()
-    {
-        throw new NotImplementedException();
-    }
-
-    public event EventHandler<OwnerChangedEventArgs> OwnerChanged;
 }
